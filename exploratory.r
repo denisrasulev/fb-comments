@@ -2,6 +2,10 @@ library(ggplot2)
 library(lubridate)
 source("/Volumes/data/projects/fb_sentiment/parser.r")
 
+# read comments file
+setwd('/Volumes/data/projects/fb_sentiment/')
+comments  <- readLines("comments_processed.txt", encoding = "UTF-8", ok = TRUE, skipNul = FALSE, warn = FALSE)
+
 # prepare empty data frame to store name, comment, likes and date
 comments_table <- data.frame(
      name = character(0),

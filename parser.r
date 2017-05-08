@@ -1,6 +1,4 @@
 # comments parser
-setwd('/Volumes/data/projects/fb_sentiment/')
-comments  <- readLines("comments_processed.txt", encoding = "UTF-8", ok = TRUE, skipNul = FALSE, warn = FALSE)
 
 parse_comments <- function(df, txt) {
      # this function goes through comments file line by line, finds and saves
