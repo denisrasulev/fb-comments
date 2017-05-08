@@ -1,6 +1,8 @@
 library(ggplot2)
+library(lubridate)
 source("/Volumes/data/projects/fb_sentiment/parser.r")
 
+# prepare empty data frame to store name, comment, likes and date
 comments_table <- data.frame(
      name = character(0),
      cmnt = character(0),
@@ -9,20 +11,20 @@ comments_table <- data.frame(
      stringsAsFactors = FALSE
 )
 
+# parse comments
 clean <- parse_comments(comments_table, comments)
-clean <- na.omit(clean)
-clean[,'like'] <- as.numeric(clean[,'like'])
 
+# split date column for further analysis
 clean[,'dt']    <- parse_date_time(clean[,'date'], orders = "mdy IMp")
 clean[,'year']  <- year(clean[,'dt'])
 clean[,'month'] <- month(clean[,'dt'])
 clean[,'day']   <- day(clean[,'dt'])
 clean[,'hour']  <- hour(clean[,'dt'])
 
+# remove unused columns
 clean[,c('date','dt')] <- NULL
 
-
-# Exploratory
+# Exploratory Analysis
 
 # top commenter by number of comments
 w = table(clean$name)
@@ -54,9 +56,7 @@ barplot(v$like[1:30],
         horiz = TRUE,
         las = 1)
 
-# most lengthy comment
-
-# max(nchar(clean$cmnt))
+# most lengthy comment - max(nchar(clean$cmnt))
 comment_length = 0
 for (i in 1:nrow(clean)) {
      if (nchar(clean$cmnt[i]) > comment_length) {
@@ -67,4 +67,3 @@ for (i in 1:nrow(clean)) {
 sprintf("Author of most lengthy comment is %s", clean$name[index])
 sprintf("Comments contains %d characters", nchar(clean$cmnt[index]))
 print(clean$cmnt[index])
-
