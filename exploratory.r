@@ -1,22 +1,18 @@
-library(ggplot2)
-library(lubridate)
+# Facebook Comments Exploration
+# (c) 2017 Denis Rasulev
+# All Rights Reserved.
+
+# load required libraries and functions
+suppressWarnings(library(ggplot2))
+suppressWarnings(library(lubridate))
 source("/Volumes/data/projects/fb_sentiment/parser.r")
 
 # read comments file
 setwd('/Volumes/data/projects/fb_sentiment/')
-comments  <- readLines("comments_processed.txt", encoding = "UTF-8", ok = TRUE, skipNul = FALSE, warn = FALSE)
-
-# prepare empty data frame to store name, comment, likes and date
-comments_table <- data.frame(
-     name = character(0),
-     cmnt = character(0),
-     like = numeric(0),
-     date = character(0),
-     stringsAsFactors = FALSE
-)
+comments_file  <- readLines("comments_processed.txt", encoding = "UTF-8", ok = TRUE, skipNul = FALSE, warn = FALSE)
 
 # parse comments
-clean <- parse_comments(comments_table, comments)
+clean <- parse_comments(comments_file)
 
 # split date column for further analysis
 clean[,'dt']    <- parse_date_time(clean[,'date'], orders = "mdy IMp")
@@ -28,7 +24,7 @@ clean[,'hour']  <- hour(clean[,'dt'])
 # remove unused columns
 clean[,c('date','dt')] <- NULL
 
-# Exploratory Analysis
+# Exploratory Analysis 1
 
 # top commenter by number of comments
 w = table(clean$name)
@@ -47,7 +43,7 @@ barplot(t$Comments[1:30],
         horiz = TRUE,
         las = 1)
 
-# top commenter by number of likes
+# most liked comment/commenter
 v <- clean[order(clean$like, decreasing = TRUE),]
 
 par(mai = c(.6,2.5,.1,.5))
@@ -70,4 +66,5 @@ for (i in 1:nrow(clean)) {
 }
 sprintf("Author of most lengthy comment is %s", clean$name[index])
 sprintf("Comments contains %d characters", nchar(clean$cmnt[index]))
-print(clean$cmnt[index])
+
+# Exploratory Analysis 2
