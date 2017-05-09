@@ -11,4 +11,4 @@ Small project to analyse comments to this [post](https://www.facebook.com/permal
 - Sentiment analysis
 
 ## Bugs
-- Parser works VERY slow while saving info to data frame
+- Parser works VERY slow while saving info to data frame - 2017/05/09 Fixed
