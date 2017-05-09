@@ -9,3 +9,6 @@ Small project to analyse comments to this [post](https://www.facebook.com/permal
 - Count
 - Word cloud?
 - Sentiment analysis
+
+## Bugs
+- Parser works VERY slow while saving info to data frame
