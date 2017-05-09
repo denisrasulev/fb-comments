@@ -7,16 +7,12 @@ parse_comments <- function(comments) {
      # to data frame - name, text of comment, number of likes and date posted
      # returns data.frame['name','cmnt','like','date']
 
+     # save length of comments file
      number_of_rows <- length(comments)
 
      # prepare empty data frame to store name, comment, likes and date
-     df <- data.frame(
-          name = character(0),
-          cmnt = character(0),
-          like = numeric(0),
-          date = character(0),
-          stringsAsFactors = FALSE
-     )
+     df <- data.frame(matrix(ncol = 4, nrow = number_of_rows))
+     colnames(df) <- c('name','cmnt','like','date')
 
      for (i in 1:number_of_rows ) {
           if ( comments[i] == "" ) {
