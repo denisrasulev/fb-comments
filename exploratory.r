@@ -38,16 +38,15 @@ names(t)[1] = 'Name'
 names(t)[2] = 'Comments'
 
 # show top commenters as bar plot
-par(mar = c(3,10,2,1), adj = 0)
+par(mar = c(3,12,2,1))
 barplot(t$Comments[1:30],
-        main = "Top 30 commenters",
         names.arg = t$Name[1:30],
         col = rainbow(45),
         xlim = c(0,300),
         ylim = c(35,0),
         horiz = TRUE,
-        line = 0,
         las = 1)
+title("Top 30 commenters", adj = 0, line = 0)
 
 # most liked comment/commenter
 v <- df_comments[order(df_comments$like, decreasing = TRUE),]
@@ -55,14 +54,13 @@ v <- df_comments[order(df_comments$like, decreasing = TRUE),]
 # show top most liked as bar plot
 par(mar = c(3,12,2,1), adj = 0)
 barplot(v$like[1:30],
-        main = "Top 30 most liked commenters",
         names.arg = v$name[1:30],
         col = rainbow(45),
         xlim = c(0,100),
         ylim = c(35,0),
         horiz = TRUE,
-        line = 0,
         las = 1)
+title("Top 30 most liked commenters", adj = 0, line = 0)
 
 # most lengthy comment - max(nchar(df_comments$cmnt))
 comment_length = 0
@@ -103,20 +101,17 @@ d <- data.frame(word = names(v), freq = v)
 # check top 10 words
 head(d, 10)
 
-# build word cloud
-set.seed(12345)
-wordcloud2(data = d)
-
 # show top words as bar plot
-par(mar = c(3,6,2,1), adj = 0)
+par(mar = c(3,6,2,1))
 barplot(d[1:30,]$freq,
-        main = "Top 30 words",
         names.arg = d$word[1:30],
-        #col = c("lightblue","red","green"),
         col = "lightgreen",
-        #col = rainbow(90),
         xlim = c(0,450),
         ylim = c(35,0),
         horiz = TRUE,
-        line = 0,
         las = 1)
+title("Top 30 words", adj = 0, line = 0)
+
+# build word cloud
+set.seed(12345)
+wordcloud2(data = d)
