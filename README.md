@@ -5,6 +5,7 @@ Small project to analyse comments to this [post](https://www.facebook.com/permal
 
 ## To do
 - Clean corpus
+- Time analysis
 - Sentiment analysis
 
 ## Done
