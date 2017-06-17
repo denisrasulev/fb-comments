@@ -3,10 +3,12 @@
 # All Rights Reserved.
 
 # load required libraries and functions
-library(tm)
-library(wordcloud2)
-suppressWarnings(library(ggplot2))
-suppressWarnings(library(lubridate))
+library(tm)         # Framework for text mining applications within R
+library(NLP)        # Basic classes and methods for Natural Language Processing
+library(slam)       # Data structures and algorithms for sparse arrays & matrices
+library(ggplot2)    # Implementation of the grammar of graphics in R
+library(lubridate)  # Make Dealing with Dates a Little Easier
+library(wordcloud2) # Fast visualization tool for creating wordcloud
 source("/Volumes/data/projects/fb_sentiment/parser.r")
 
 # read comments file
@@ -55,7 +57,7 @@ v <- df_comments[order(df_comments$like, decreasing = TRUE),]
 par(mar = c(3,12,2,1), adj = 0)
 barplot(v$like[1:30],
         names.arg = v$name[1:30],
-        col = rainbow(45),
+        col = "lightgreen",
         xlim = c(0,100),
         ylim = c(35,0),
         horiz = TRUE,
@@ -78,7 +80,7 @@ sprintf("The comment contains %d characters and %d words",
 # Exploratory Analysis 2
 # ==============================================================================
 
-# create text corpus
+# because we have relatively small number of documents we will use simple corpus
 df_corpus = Corpus(VectorSource(df_comments$cmnt), readerControl = list(language = "rus"))
 
 # pre-process corpus
@@ -91,15 +93,19 @@ df_corpus <- tm_map(df_corpus, removeWords, c("вы", "её", "не", "это", 
                                             "emoticon"))
 df_corpus <- tm_map(df_corpus, stripWhitespace)
 
+# function for sorting words in decreasing order
+sort_freq <- function(x){
+     srt <- sort(row_sums(x, na.rm = T), decreasing = TRUE)
+     frf <- data.frame(word = names(srt), freq = srt, row.names = NULL,
+                       check.rows = TRUE,  stringsAsFactors = FALSE)
+     return(frf)
+}
+
 # create term-document matrix
 tdm <- TermDocumentMatrix(df_corpus)
 
 # create data frame with words sorted by frequency
-v <- sort(rowSums(as.matrix(tdm)), decreasing = TRUE)
-d <- data.frame(word = names(v), freq = v)
-
-# check top 10 words
-head(d, 10)
+d <- sort_freq(tdm)
 
 # show top words as bar plot
 par(mar = c(3,6,2,1))
@@ -113,5 +119,8 @@ barplot(d[1:30,]$freq,
 title("Top 30 words", adj = 0, line = 0)
 
 # build word cloud
-set.seed(12345)
+set.seed(2017)
 wordcloud2(data = d)
+
+# Sentiment Analysis
+# ==============================================================================
