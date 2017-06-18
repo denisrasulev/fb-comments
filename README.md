@@ -2,8 +2,7 @@
 
 Small project to analyse comments to this [post](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268).
 
-On April 22, 2016 one of the popular Kazakhstan's bloggers - Ms [Asel Bayandarova]
-(https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
+On April 22, 2016 one of the popular Kazakhstan's bloggers - Ms [Asel Bayandarova](https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
 had publishd facebook post titled "Что можно делать казашкам." (What are kazakh
 women allowed to do).
 

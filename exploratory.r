@@ -6,7 +6,6 @@
 library(tm)         # Framework for text mining applications within R
 library(NLP)        # Basic classes and methods for Natural Language Processing
 library(slam)       # Data structures and algorithms for sparse arrays & matrices
-library(dplyr)      # Fast tool for working with data frame objects
 library(ggplot2)    # Implementation of the grammar of graphics in R
 library(lubridate)  # Make Dealing with Dates a Little Easier
 library(wordcloud2) # Fast visualization tool for creating wordcloud
