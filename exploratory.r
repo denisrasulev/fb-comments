@@ -29,7 +29,7 @@ df_comments[,'hour']  <- hour(df_comments[,'dt'])
 # remove unused columns
 df_comments[,c('date','dt')] <- NULL
 
-# Exploratory Analysis 1
+# Exploratory Analysis 1 - Top something
 # ==============================================================================
 
 # who is top commenter by number of comments
@@ -77,7 +77,7 @@ number_of_words <- sapply(gregexpr("\\W+", df_comments$cmnt[index]), length) + 1
 sprintf("The comment contains %d characters and %d words",
         nchar(df_comments$cmnt[index]), number_of_words)
 
-# Exploratory Analysis 2
+# Exploratory Analysis 2 - Word Cloud
 # ==============================================================================
 
 # because we have relatively small number of documents we will use simple corpus
@@ -104,6 +104,12 @@ sort_freq <- function(x){
 # create term-document matrix
 tdm <- TermDocumentMatrix(df_corpus)
 
+# remove sparse words:
+# 0.99999 - all in
+# 0.9999  - words encountered more than 2 times
+# 0.999   - words encountered more than 10 times
+tdm <- removeSparseTerms(tdm, 0.999)
+
 # create data frame with words sorted by frequency
 d <- sort_freq(tdm)
 
@@ -122,5 +128,11 @@ title("Top 30 words", adj = 0, line = 0)
 set.seed(2017)
 wordcloud2(data = d)
 
+# Time Series Analysis
+# ==============================================================================
+
+
+
 # Sentiment Analysis
 # ==============================================================================
+
