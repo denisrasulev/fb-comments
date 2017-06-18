@@ -6,6 +6,7 @@
 library(tm)         # Framework for text mining applications within R
 library(NLP)        # Basic classes and methods for Natural Language Processing
 library(slam)       # Data structures and algorithms for sparse arrays & matrices
+library(dplyr)      # Fast tool for working with data frame objects
 library(ggplot2)    # Implementation of the grammar of graphics in R
 library(lubridate)  # Make Dealing with Dates a Little Easier
 library(wordcloud2) # Fast visualization tool for creating wordcloud
@@ -54,7 +55,7 @@ title("Top 30 commenters", adj = 0, line = 0)
 v <- df_comments[order(df_comments$like, decreasing = TRUE),]
 
 # show top most liked as bar plot
-par(mar = c(3,12,2,1), adj = 0)
+par(mar = c(3,12,2,1))
 barplot(v$like[1:30],
         names.arg = v$name[1:30],
         col = "lightgreen",
@@ -105,9 +106,9 @@ sort_freq <- function(x){
 tdm <- TermDocumentMatrix(df_corpus)
 
 # remove sparse words:
-# 0.99999 - all in
-# 0.9999  - words encountered more than 2 times
-# 0.999   - words encountered more than 10 times
+# 0.99999 - remain all words, nothing is deleted
+# 0.9999  - remain words encountered more than 2 times
+# 0.999   - remain words encountered more than 10 times
 tdm <- removeSparseTerms(tdm, 0.999)
 
 # create data frame with words sorted by frequency
@@ -131,8 +132,40 @@ wordcloud2(data = d)
 # Time Series Analysis
 # ==============================================================================
 
+t1 <- table(df_comments$year)
+t2 <- table(df_comments$month)
+t3 <- table(df_comments$day)
+t4 <- table(df_comments$hour)
 
+par(mar = c(3,5,3,1))
+barplot(t1,
+        col = "lightgreen",
+        ylim = c(0,12000),
+        las = 1)
+title("Number of Comments by Year", adj = 0.5, line = 1)
+
+barplot(t2,
+        col = "lightgreen",
+        ylim = c(0,12000),
+        las = 1)
+title("Number of Comments by Month", adj = 0.5, line = 1)
+
+barplot(t3,
+        col = "lightgreen",
+        ylim = c(0,5000),
+        las = 1)
+title("Number of Comments by Day", adj = 0.5, line = 1)
+
+barplot(t4,
+        col = "lightgreen",
+        ylim = c(0,800),
+        las = 1)
+abline(h = mean(t4), col = "red")
+title("Number of Comments by Hour", adj = 0.5, line = 1)
 
 # Sentiment Analysis
 # ==============================================================================
 
+
+
+# eof
