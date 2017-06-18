@@ -21,7 +21,7 @@ Small project to analyse comments to this [post](https://www.facebook.com/permal
 
 In case you have found this work useful in anyway, please, consider a small donation. Thank you!
 
-- [Buy me a coffee (€1)](paypal.me/denisrasulev/1)
-- [Buy me a beer (€2)](paypal.me/denisrasulev/2)
-- [Buy me a wine (€5)](paypal.me/denisrasulev/5)
-- [Buy me anything ;)](paypal.me/denisrasulev)
+- [Buy me a coffee (€1)](https://www.paypal.me/denisrasulev/1)
+- [Buy me a beer (€2)](https://www.paypal.me/denisrasulev/2)
+- [Buy me a wine (€5)](https://www.paypal.me/denisrasulev/5)
+- [Buy me anything ;)](https://www.paypal.me/denisrasulev)
