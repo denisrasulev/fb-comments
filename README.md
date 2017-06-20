@@ -1,9 +1,7 @@
 # Facebook Comments Sentiment Analysis
 
-Small project to analyse comments to this [post](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268).
-
 On April 22, 2016 one of the popular Kazakhstan's bloggers - [Asel Bayandarova](https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
-had publishd facebook [post](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268) titled "Что можно делать казашкам." (What are kazakh women allowed to do).
+published facebook [post](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268) titled "Что можно делать казашкам" ("What are kazakh women allowed to do"").
 
 This post has had sparkled a fierce discussion in the comments between facebook users of Kazkhstan, who had clearly separated into two large groups - with one being supportive to the Original Poster, while other blaming OP up to the use of obscene vocabulary.
 
@@ -22,9 +20,6 @@ The purpose of the project is to research overall statistics of the comments, li
 - [X] Corpus
 - [X] Top words
 - [X] Word cloud
-
-## Bugs
-- [X] Parser works VERY slow while saving info to data frame - 2017/05/09 Fixed
 
 ## Donations
 
