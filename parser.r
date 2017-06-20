@@ -1,4 +1,4 @@
-# Parser for Comments from pre-Processed File
+# Information parser for pre-processed file
 # (c) 2017 Denis Rasulev
 # All Rights Reserved.
 
@@ -6,7 +6,10 @@ parse_comments <- function(comments) {
      # this function goes through pre-processed comments file row by row,
      # finds information by certain markers and saves it to data frame as
      # name, text of comment, number of likes and date posted
-     # then returns data.frame['name','cmnt','like','date']
+     # returns data.frame['name','cmnt','like','year',''month','day','hour']
+
+     # load required library
+     library(lubridate)  # Make Dealing with Dates a Little Easier
 
      # save length of file with comments
      number_of_rows <- length(comments)
@@ -60,6 +63,16 @@ parse_comments <- function(comments) {
 
      # convert number of likes from character to number
      df[,'like'] <- as.numeric(df[,'like'])
+
+     # split date column for convenience of further analysis
+     df[,'dt']    <- parse_date_time(df[,'date'], orders = "mdy IMp")
+     df[,'year']  <- year(df[,'dt'])
+     df[,'month'] <- month(df[,'dt'])
+     df[,'day']   <- day(df[,'dt'])
+     df[,'hour']  <- hour(df[,'dt'])
+
+     # remove unused columns
+     df[,c('date','dt')] <- NULL
 
      # return clean data frame
      return(df)

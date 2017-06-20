@@ -1,4 +1,4 @@
-# Facebook Comments Exploration
+# Facebook Comments Exploration and Analysis
 # (c) 2017 Denis Rasulev
 # All Rights Reserved.
 
@@ -7,34 +7,37 @@ library(tm)         # Framework for text mining applications within R
 library(NLP)        # Basic classes and methods for Natural Language Processing
 library(slam)       # Data structures and algorithms for sparse arrays & matrices
 library(ggplot2)    # Implementation of the grammar of graphics in R
-library(lubridate)  # Make Dealing with Dates a Little Easier
 library(wordcloud2) # Fast visualization tool for creating wordcloud
 source("/Volumes/data/projects/fb_sentiment/parser.r")
 
-# read comments file
+# set working directory
 setwd('/Volumes/data/projects/fb_sentiment/')
-comments_file  <- readLines("comments_processed.txt", encoding = "UTF-8",
-                            ok = TRUE, skipNul = FALSE, warn = FALSE)
 
-# parse comments from prepared file
-df_comments <- parse_comments(comments_file)
+# check if parsed file already exists to avoid time-consuming parsing every time
 
-# split date column for further analysis
-df_comments[,'dt']    <- parse_date_time(df_comments[,'date'], orders = "mdy IMp")
-df_comments[,'year']  <- year(df_comments[,'dt'])
-df_comments[,'month'] <- month(df_comments[,'dt'])
-df_comments[,'day']   <- day(df_comments[,'dt'])
-df_comments[,'hour']  <- hour(df_comments[,'dt'])
+# if parsed file does not exist already
+if (!file.exists("data/comments.rds")) {
 
-# remove unused columns
-df_comments[,c('date','dt')] <- NULL
+     # then read pre-processed comments file
+     comments_file  <- readLines("data/comments_processed.txt",
+                                 encoding = "UTF-8", ok = TRUE,
+                                 skipNul = FALSE, warn = FALSE)
+
+     # parse everything from it
+     parsed <- parse_comments(comments_file)
+
+     # and save it to disk
+     saveRDS(parsed, file = "data/comments.rds")
+}
+
+# if parsed file already exists, read it in
+df_comments <- readRDS("data/comments.rds")
 
 # Exploratory Analysis 1 - Top something
 # ==============================================================================
 
 # who is top commenter by number of comments
-w <- table(df_comments$name)
-t <- as.data.frame(w)
+t <- as.data.frame(table(df_comments$name))
 t <- t[order(t$Freq, decreasing = TRUE),]
 names(t)[1] = 'Name'
 names(t)[2] = 'Comments'
@@ -128,7 +131,7 @@ title("Top 30 words", adj = 0, line = 0)
 set.seed(2017)
 wordcloud2(data = d)
 
-# Time Series Analysis
+# Time Analysis
 # ==============================================================================
 
 t1 <- table(df_comments$year)
