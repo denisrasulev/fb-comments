@@ -28,6 +28,9 @@ if (!file.exists("data/comments.rds")) {
 
      # and save it to disk
      saveRDS(parsed, file = "data/comments.rds")
+
+     # clear memory
+     rm(comments_file, parse_comments, parsed)
 }
 
 # if parsed file already exists, read it in
