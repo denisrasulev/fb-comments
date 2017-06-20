@@ -1,6 +1,6 @@
 # Facebook Comments Sentiment Analysis
 
-On April 22, 2016 one of the notable Kazakhstani bloggers - [Ms Asel Bayandarova](https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
+On April 22, 2016 one of the notable Kazakhstani bloggers - [Asel Bayandarova](https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
 has published facebook post titled ["Что можно делать казашкам"](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268)
 ("What are kazakh women allowed to do").
 
