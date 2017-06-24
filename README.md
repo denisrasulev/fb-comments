@@ -4,7 +4,7 @@
 
 On April 22, 2016 one of the notable (36,530 followers) Kazakhstani bloggers - [Asel Bayandarova](https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
 has published facebook post titled ["Что можно делать казашкам"](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268)
-("What kazakh women are allowed to do"). The post was accompanied by a rather provocative photograph in green swimming trunks alone, although (almost) without demonstrating intimate body parts.
+("What kazakh women are allowed to do"). The post was accompanied by a rather provocative photograph in green swimming trunks alone, (almost) without demonstrating intimate body parts.
 
 The post has sparkled a fierce discussion between facebook users of Kazkhstan (and abroad), who divided into two groups with one being supportive to the Original Poster, while the other blaming OP up to the use of obscene vocabulary.
 
