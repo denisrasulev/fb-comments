@@ -8,7 +8,7 @@ has published facebook post titled ["Что можно делать казашк
 
 The post has sparkled a fierce discussion between facebook users of Kazkhstan (and abroad), who divided into two groups with one being supportive to the Original Poster, while the other blaming OP up to the use of obscene vocabulary.
 
-Overall this post got more than 20,000 likes, 990 shares and about 8000 comments, and so the purpose of this project is to make exploratory and sentiment analysis of those comments.
+Overall this post got more than 20,000 likes, 990 shares and about 11,000 comments + replies, so the purpose of this project is exploratory and sentiment analysis of those comments.
 
 ## Emoticons stats
 
