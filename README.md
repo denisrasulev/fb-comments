@@ -27,7 +27,7 @@ There were numerous emoticons used alongside comments. Here is some statistics o
 |    😘    |     18    |
 
 ## To do
-- [ ] Clean corpus
+
 - [ ] Sentiment analysis
 
 ## Done
@@ -35,6 +35,7 @@ There were numerous emoticons used alongside comments. Here is some statistics o
 - [X] Top words
 - [X] Word cloud
 - [X] Time analysis
+- [X] Clean corpus
 
 ## Donations
 
