@@ -4,11 +4,27 @@
 
 On April 22, 2016 one of the notable (36,530 followers) Kazakhstani bloggers - [Asel Bayandarova](https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
 has published facebook post titled ["Что можно делать казашкам"](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268)
-("What are kazakh women allowed to do"). The post was accompanied by a rather provocative photograph in green swimming trunks alone, although (almost) without demonstrating intimate body parts.
+("What kazakh women are allowed to do"). The post was accompanied by a rather provocative photograph in green swimming trunks alone, although (almost) without demonstrating intimate body parts.
 
 The post has sparkled a fierce discussion between facebook users of Kazkhstan (and abroad), who divided into two groups with one being supportive to the Original Poster, while the other blaming OP up to the use of obscene vocabulary.
 
-Overall this post got more than 20,000 likes, 990 shares and about 8000 comments, and so the purpose of this project is to make exploratory and sentiment analysis of the comments.
+Overall this post got more than 20,000 likes, 990 shares and about 8000 comments, and so the purpose of this project is to make exploratory and sentiment analysis of those comments.
+
+## Emoticons stats
+
+There were numerous emoticons used alongside comments. Here is some statistics on their frequencу.
+
+| Emoticon | Frequency |
+|:--------:|:---------:|
+|    :)    |    914    |
+|    👍    |    621    |
+|    😂    |    578    |
+|    👏    |    189    |
+|    😍    |     54    |
+|    😊    |     44    |
+|    👌    |     42    |
+|    😀    |     35    |
+|    😘    |     18    |
 
 ## To do
 - [ ] Clean corpus
