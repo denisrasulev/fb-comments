@@ -1,6 +1,6 @@
 # Information parser for pre-processed file
 # (c) 2017 Denis Rasulev
-# All Rights Reserved.
+# All Rights Reserved
 
 parse_comments <- function(comments) {
      # this function goes through pre-processed comments file row by row,
@@ -8,13 +8,13 @@ parse_comments <- function(comments) {
      # name, text of comment, number of likes and date posted
      # returns data.frame['name','cmnt','like','year',''month','day','hour']
 
-     # load required library
+     # load required libraries
      library(lubridate)  # Make Dealing with Dates a Little Easier
 
      # save length of file with comments
      number_of_rows <- length(comments)
 
-     # prepare empty data frame to store name, comment, likes and date
+     # prepare empty data frame to store name, comment, likes and dates
      df <- data.frame(matrix(ncol = 4, nrow = number_of_rows))
      colnames(df) <- c('name','cmnt','like','date')
 
@@ -23,7 +23,7 @@ parse_comments <- function(comments) {
           # if row is empty...
           if ( comments[i] == "" ) {
 
-               # then next row after empty one contains commenter's name
+               # then next row contains commenter's name
                df[i, 'name'] <- comments[i + 1]
 
                # third row after empty one contains text of a comment and
@@ -37,12 +37,13 @@ parse_comments <- function(comments) {
                # while next line doesn't start with middle dot '·' (unicode 00B7)
                while (substring(comments[i + j], 1, 1) != '\U00B7') {
 
-                    # if we reach end of file we need to break the loop
+                    # check if we have reached end of the file where we need to
+                    # break the loop
                     if ( i + j > number_of_rows ) {
                          break
                     }
 
-                    # add every line to comment
+                    # if not end then add every line to comment
                     comment_text <- paste(comment_text, comments[i + j])
                     j <- j + 1
                }

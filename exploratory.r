@@ -1,6 +1,9 @@
 # Facebook Comments Exploration and Analysis
 # (c) 2017 Denis Rasulev
-# All Rights Reserved.
+# All Rights Reserved
+
+# set working directory
+setwd('/Volumes/data/projects/fb_sentiment/')
 
 # load required libraries and functions
 library(tm)         # Framework for text mining applications within R
@@ -8,17 +11,13 @@ library(NLP)        # Basic classes and methods for Natural Language Processing
 library(slam)       # Data structures and algorithms for sparse arrays & matrices
 library(ggplot2)    # Implementation of the grammar of graphics in R
 library(wordcloud2) # Fast visualization tool for creating wordcloud
-source("/Volumes/data/projects/fb_sentiment/parser.r")
+source("parser.r")
+source("helper.r")
 
-# set working directory
-setwd('/Volumes/data/projects/fb_sentiment/')
-
-# check if parsed file already exists to avoid time-consuming parsing every time
-
-# if parsed file does not exist already
+# if parsed file does not exist
 if (!file.exists("data/comments.rds")) {
 
-     # then read pre-processed comments file
+     # then load pre-processed comments file
      comments_file  <- readLines("data/comments_processed.txt",
                                  encoding = "UTF-8", ok = TRUE,
                                  skipNul = FALSE, warn = FALSE)
@@ -39,7 +38,7 @@ df_comments <- readRDS("data/comments.rds")
 # Exploratory Analysis 1 - Top something
 # ==============================================================================
 
-# who is top commenter by number of comments
+# top commenters by number of comments
 t <- as.data.frame(table(df_comments$name))
 t <- t[order(t$Freq, decreasing = TRUE),]
 names(t)[1] = 'Name'
@@ -56,7 +55,7 @@ barplot(t$Comments[1:30],
         las = 1)
 title("Top 30 commenters", adj = 0, line = 0)
 
-# most liked comment/commenter
+# most liked commenters
 v <- df_comments[order(df_comments$like, decreasing = TRUE),]
 
 # show top most liked as bar plot
@@ -70,7 +69,7 @@ barplot(v$like[1:30],
         las = 1)
 title("Top 30 most liked commenters", adj = 0, line = 0)
 
-# most lengthy comment - max(nchar(df_comments$cmnt))
+# most lengthy comment
 comment_length = 0
 for (i in 1:nrow(df_comments)) {
      if (nchar(df_comments$cmnt[i]) > comment_length) {
@@ -78,6 +77,9 @@ for (i in 1:nrow(df_comments)) {
           index <- i
      }
 }
+
+test <- max(nchar(df_comments$cmnt))
+
 sprintf("Author of the most lengthy comment is %s", df_comments$name[index])
 number_of_words <- sapply(gregexpr("\\W+", df_comments$cmnt[index]), length) + 1
 sprintf("The comment contains %d characters and %d words",
@@ -89,23 +91,34 @@ sprintf("The comment contains %d characters and %d words",
 # because we have relatively small number of documents we will use simple corpus
 df_corpus = Corpus(VectorSource(df_comments$cmnt), readerControl = list(language = "rus"))
 
+# load list of russian stop words
+extended_stopwords <- readLines("stop_words.txt", encoding = "UTF-8", ok = TRUE,
+                                skipNul = TRUE, warn = FALSE)
+
+# remove contact information in the beginning of the file
+extended_stopwords <- stopwords[5:length(stopwords)]
+
+# combine extended and standard stopwords lists
+extended_stopwords <- c(stopwords, stopwords('russian'))
+
+# before we decide how pre-process corpus, we need to examine it
+tdm_temp <- TermDocumentMatrix(df_corpus)
+d_temp <- sort_freq(tdm_temp)
+d_temp[1:100]
+
 # pre-process corpus
-df_corpus <- tm_map(df_corpus, content_transformer(tolower))
 df_corpus <- tm_map(df_corpus, removeNumbers)
 df_corpus <- tm_map(df_corpus, removePunctuation)
-df_corpus <- tm_map(df_corpus, removeWords, stopwords('russian'))
-df_corpus <- tm_map(df_corpus, removeWords, c("вы", "её", "не", "это", "жок",
-                                            "деп", "фото", "екен", "photo",
-                                            "emoticon"))
-df_corpus <- tm_map(df_corpus, stripWhitespace)
+df_corpus <- tm_map(df_corpus, content_transformer(tolower))
 
-# function for sorting words in decreasing order
-sort_freq <- function(x){
-     srt <- sort(row_sums(x, na.rm = T), decreasing = TRUE)
-     frf <- data.frame(word = names(srt), freq = srt, row.names = NULL,
-                       check.rows = TRUE,  stringsAsFactors = FALSE)
-     return(frf)
-}
+df_corpus <- tm_map(df_corpus, content_transformer(gsub),
+                    pattern = "\\b(жоқ|жок)\\b", replacement = "нет")
+df_corpus <- tm_map(df_corpus, content_transformer(gsub),
+                    pattern = "photo", replacement = "фото")
+
+df_corpus <- tm_map(df_corpus, removeWords, c("деп","фото","екен","emoticon"))
+df_corpus <- tm_map(df_corpus, removeWords, extended_stopwords)
+df_corpus <- tm_map(df_corpus, stripWhitespace)
 
 # create term-document matrix
 tdm <- TermDocumentMatrix(df_corpus)
@@ -123,7 +136,7 @@ d <- sort_freq(tdm)
 par(mar = c(3,6,2,1))
 barplot(d[1:30,]$freq,
         names.arg = d$word[1:30],
-        col = "lightgreen",
+        col = "green",
         xlim = c(0,450),
         ylim = c(35,0),
         horiz = TRUE,
@@ -132,16 +145,21 @@ title("Top 30 words", adj = 0, line = 0)
 
 # build word cloud
 set.seed(2017)
-wordcloud2(data = d)
+#wordcloud2(data = d)
+cloud <- wordcloud2(data = d)
+#path  <- htmltools::html_print(cloud) # saves html in temp directory
+print(htmltools::html_print(cloud))
 
-# Time Analysis
+# Basic Time Analysis
 # ==============================================================================
 
-t1 <- table(df_comments$year)
-t2 <- table(df_comments$month)
-t3 <- table(df_comments$day)
-t4 <- table(df_comments$hour)
+# aggregate data by time frame
+t1 <- table(df_comments$year)   # year
+t2 <- table(df_comments$month)  # month
+t3 <- table(df_comments$day)    # day
+t4 <- table(df_comments$hour)   # hour
 
+# distribution of comments by year
 par(mar = c(3,5,3,1))
 barplot(t1,
         col = "lightgreen",
@@ -149,18 +167,21 @@ barplot(t1,
         las = 1)
 title("Number of Comments by Year", adj = 0.5, line = 1)
 
+# distribution of comments by month
 barplot(t2,
         col = "lightgreen",
         ylim = c(0,12000),
         las = 1)
 title("Number of Comments by Month", adj = 0.5, line = 1)
 
+# distribution of comments by day
 barplot(t3,
         col = "lightgreen",
         ylim = c(0,5000),
         las = 1)
 title("Number of Comments by Day", adj = 0.5, line = 1)
 
+# distribution of comments by hour
 barplot(t4,
         col = "lightgreen",
         ylim = c(0,800),
@@ -170,110 +191,5 @@ title("Number of Comments by Hour", adj = 0.5, line = 1)
 
 # Sentiment Analysis
 # ==============================================================================
-
-# More exploratory code for review
-# ==============================================================================
-
-# function for cleaning
-clean <- function(x)
-{
-     # convert everything to lower case
-     x <- tolower(x)
-
-     # remove numbers and control symbols
-     x <- gsub("[[:digit:]]", "", x)
-     x <- gsub("[[:cntrl:]]", "", x)
-
-     # remove web addresses and urls
-     x <- gsub(" www(.+) ", "", x)
-     x <- gsub(" http(.+) ", "", x)
-
-     # remove punctuations marks
-     x <- gsub("[[:punct:]]", "", x)
-
-     # remove remaining single letters (repeat 5 times)
-     x <- gsub("\\b [а-яё]\\b", "", x)
-     x <- gsub("\\b [а-яё]\\b", "", x)
-     x <- gsub("\\b [а-яё]\\b", "", x)
-     x <- gsub("\\b [а-яё]\\b", "", x)
-     x <- gsub("\\b [а-яё]\\b", "", x)
-
-     # remove single letters in the beginning of sentence
-     x <- gsub("\\b[а-яё]\\b ", "", x)
-
-     # remove leading and trailing spaces
-     x <- gsub("^\\s+|\\s+$", "", x)
-
-     return(x)
-}
-
-# function for sorting n-grams in decreasing order
-sort.freq <- function(x){
-     srt <- sort(row_sums(x, na.rm = T), decreasing = TRUE)
-     frf <- data.frame(ngram = names(srt), freq = srt, row.names = NULL, check.rows = TRUE,  stringsAsFactors = FALSE)
-     return(frf)
-}
-
-# functions for tokenization
-n1gram <- function(x) unlist(lapply(ngrams(words(x), 1), paste, collapse = " "), use.names = FALSE)
-n2gram <- function(x) unlist(lapply(ngrams(words(x), 2), paste, collapse = " "), use.names = FALSE)
-n3gram <- function(x) unlist(lapply(ngrams(words(x), 3), paste, collapse = " "), use.names = FALSE)
-
-# MAIN PROCESSING BLOCK
-
-# read data
-coments  <- readLines("comments_semi_clean_2.txt", encoding = "UTF-8", ok = TRUE, skipNul = TRUE, warn = FALSE)
-cln.cmts <- clean(coments)
-write(cln.cmts, file = "auto_cleaned.txt")
-
-# load list of russian stop words
-stopwords <- readLines("russian-stop-words.txt", encoding = "UTF-8", ok = TRUE, skipNul = TRUE, warn = FALSE)
-
-# create our corpus and clean it
-corp <- VCorpus(VectorSource(cln.cmts))
-corp <- tm_map(corp, stripWhitespace)
-copr <- tm_map(corp, removeWords, stopwords)
-
-# create term document matrix for unigrams, reduce sparsity and save
-tdm1 <- TermDocumentMatrix(corp, control = list(tokenize = n1gram))
-tdm1 <- removeSparseTerms(tdm1, 0.99999)
-frq1 <- sort.freq(tdm1)
-# saveRDS(frq1, file = "~/Volumes/data/coursera/capstone/capapp/CapApp/data/data1.RDS")
-
-ggplot(frq1[1:30,],
-       aes(x = reorder(ngram, freq), y = freq)) +
-     geom_bar(stat = "identity", fill = "green", col = "black") +
-     theme_bw() +
-     coord_flip() +
-     theme(axis.title.y = element_blank()) +
-     labs(y = "Frequency", title = "Most common Unigrams in the Sample")
-
-# create term document matrix for bigrams, reduce sparsity and save
-tdm2 <- TermDocumentMatrix(corp, control = list(tokenize = n2gram))
-tdm2 <- removeSparseTerms(tdm2, 0.99999)
-frq2 <- sort.freq(tdm2)
-# saveRDS(frq2, file = "/Volumes/data/coursera/capstone/capapp/CapApp/data/data2.RDS")
-
-ggplot(frq2[1:30,],
-       aes(x = reorder(ngram, freq), y = freq)) +
-     geom_bar(stat = "identity", fill = "green", col = "black") +
-     theme_bw() +
-     coord_flip() +
-     theme(axis.title.y = element_blank()) +
-     labs(y = "Frequency", title = "Most common Bigrams in the Sample")
-
-# create term document matrix for trigrams, reduce sparsity and save
-tdm3 <- TermDocumentMatrix(corp, control = list(tokenize = n3gram))
-tdm3 <- removeSparseTerms(tdm3, 0.99999)
-frq3 <- sort.freq(tdm3)
-# saveRDS(frq3, file = "/Volumes/data/coursera/capstone/capapp/CapApp/data/data3.RDS")
-
-ggplot(frq3[1:30,],
-       aes(x = reorder(ngram, freq), y = freq)) +
-     geom_bar(stat = "identity", fill = "green", col = "black") +
-     theme_bw() +
-     coord_flip() +
-     theme(axis.title.y = element_blank()) +
-     labs(y = "Frequency", title = "Most common Trigrams in the Sample")
 
 # eof
