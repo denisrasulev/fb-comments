@@ -10,25 +10,12 @@ The post has sparkled a fierce discussion between facebook users of Kazkhstan (a
 
 Overall this post got more than 20,000 likes, 990 shares and about 11,000 comments + replies, so the purpose of this project is exploratory and sentiment analysis of those comments.
 
-## Emoticons stats
-
-There were numerous emoticons used alongside comments. Here is some statistics on their frequencу.
-
-| Emoticon | Frequency |
-|:--------:|:---------:|
-|    :)    |    914    |
-|    👍    |    621    |
-|    😂    |    578    |
-|    👏    |    189    |
-|    😍    |     54    |
-|    😊    |     44    |
-|    👌    |     42    |
-|    😀    |     35    |
-|    😘    |     18    |
-
 ## To do
 
+- [ ] Report
 - [ ] Sentiment analysis
+
+Sentiment analysis for Russian language remains field for exploration, therefore this feature is yet to be realized some time later.
 
 ## Done
 - [X] Corpus

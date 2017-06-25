@@ -33,7 +33,44 @@ if (!file.exists("data/comments.rds")) {
 # if parsed file already exists, read it in
 df_comments <- readRDS("data/comments.rds")
 
-# --- Exploratory Analysis 1 - Top Comment -------------------------------------
+# --- Basic Time Analysis ------------------------------------------------------
+
+# aggregate data by time frame
+t1 <- table(df_comments$year)   # year
+t2 <- table(df_comments$month)  # month
+t3 <- table(df_comments$day)    # day
+t4 <- table(df_comments$hour)   # hour
+
+# distribution of comments by year
+par(mar = c(3,5,3,1) + 0.1)
+barplot(t1,
+        col = "lightgreen",
+        ylim = c(0,12000),
+        las = 1)
+title("Number of Comments by Year", adj = 0.5, line = 1)
+
+# distribution of comments by month
+barplot(t2,
+        col = "lightgreen",
+        ylim = c(0,12000),
+        las = 1)
+title("Number of Comments by Month", adj = 0.5, line = 1)
+
+# distribution of comments by day
+barplot(t3,
+        col = "lightgreen",
+        ylim = c(0,5000),
+        las = 1)
+title("Number of Comments by Day", adj = 0.5, line = 1)
+
+# distribution of comments by hour
+barplot(t4,
+        col = "lightgreen",
+        ylim = c(0,800),
+        las = 1)
+title("Number of Comments by Hour", adj = 0.5, line = 1)
+
+# --- Exploratory Analysis 1 - Top Comment/er ----------------------------------
 
 # top commenters by number of comments
 t <- as.data.frame(table(df_comments$name))
@@ -147,43 +184,9 @@ title("Top 30 most frequently used words", adj = 0, line = 0.5)
 set.seed(2017)
 wordcloud2(data = d)
 
-# --- Basic Time Analysis ------------------------------------------------------
-
-# aggregate data by time frame
-t1 <- table(df_comments$year)   # year
-t2 <- table(df_comments$month)  # month
-t3 <- table(df_comments$day)    # day
-t4 <- table(df_comments$hour)   # hour
-
-# distribution of comments by year
-par(mar = c(3,5,3,1) + 0.1)
-barplot(t1,
-        col = "lightgreen",
-        ylim = c(0,12000),
-        las = 1)
-title("Number of Comments by Year", adj = 0.5, line = 1)
-
-# distribution of comments by month
-barplot(t2,
-        col = "lightgreen",
-        ylim = c(0,12000),
-        las = 1)
-title("Number of Comments by Month", adj = 0.5, line = 1)
-
-# distribution of comments by day
-barplot(t3,
-        col = "lightgreen",
-        ylim = c(0,5000),
-        las = 1)
-title("Number of Comments by Day", adj = 0.5, line = 1)
-
-# distribution of comments by hour
-barplot(t4,
-        col = "lightgreen",
-        ylim = c(0,800),
-        las = 1)
-title("Number of Comments by Hour", adj = 0.5, line = 1)
-
 # --- Sentiment Analysis -------------------------------------------------------
+
+# this feature is yet to be ralized some time later due to lack of resources for
+# russian language sentiment analysis
 
 # eof
