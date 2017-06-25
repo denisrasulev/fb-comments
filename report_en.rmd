@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Content
 
 - Introduction
+- Legal disclaimer
 - Getting data
 - Cleaning data
 - Pre-pocessing
@@ -20,7 +21,8 @@ knitr::opts_chunk$set(echo = TRUE)
 - Exploratory Analysis 1 - Top 30
 - Exploratory Analysis 2 - Word Cloud
 - Sentiment Analysis
-- <span style="color:red">Legal disclaimer</span>
+- Resources Used
+- Contacts
 
 ## Introduction
 
@@ -31,6 +33,10 @@ has published facebook post titled ["Что можно делать казашк
 The post has sparkled a fierce discussion between facebook users of Kazkhstan (and abroad), who divided into two groups with one being supportive to the Original Poster, while the other blaming OP up to the use of obscene vocabulary.
 
 Overall this post got more than 20,000 likes, 990 shares and about 11,000 comments + replies, so the purpose of this project is exploratory and sentiment analysis of those comments.
+
+## Legal Disclaimer
+
+Я ни за что не отвечаю!
 
 ## Getting data
 
@@ -192,7 +198,7 @@ Omir Shynybekuly 20 148 лайков...
 
 For pre-processing of the cleaned file I wrote special parser function. Knowing the structure of the prepared file, we can go through it line by line saving required pieces of information to data frame.
 
-```{r}
+```{r parser}
 # Information parser for pre-processed file
 # (c) 2017 Denis Rasulev
 # All Rights Reserved
@@ -280,7 +286,7 @@ Parsing takes some time and returns tidy data frame.
 
 ## Setup and load data
 
-```{r}
+```{r load_data, message=FALSE, warning=FALSE}
 # Facebook Comments Exploration and Analysis
 # (c) 2017 Denis Rasulev
 # All Rights Reserved
@@ -319,7 +325,7 @@ df_comments <- readRDS("data/comments.rds")
 
 ## Basic time analysis
 
-```{r}
+```{r time, fig.align='center'}
 # aggregate data by time frame
 t1 <- table(df_comments$year)   # year
 t2 <- table(df_comments$month)  # month
@@ -378,35 +384,39 @@ There were numerous emoticons used alongside comments. Here is some statistics o
 
 ### Words
 
-| Positive                     | Frequency | Negative        | Frequency |
-|:----------------------------:|:---------:|:---------------:|:---------:|
-|красавица/отка/ивая/ота/ивое  |    454    |Ұят/уят/сыз      |    415    |
-|молодец/чина/чинка            |    357    |намыс/сыз        |    171    |
-|смело/ая                      |    272    |позор            |    143    |
-|супер                         |    114    |стыд/но          |    141    |
-|браво                         |     84    |дура             |    140    |
-|поддерживаю                   |     69    |ужас/но          |     71    |
-|умная                         |     64    |шлюха (+варианты)|     48    |
-|респект                       |     43    |фу               |     42    |
-|круто/ая                      |     35    |проститутка      |     23    |
-|секси                         |     32    |глупая           |     15    |
-|отличная                      |     24    |тупая            |     15    |
-|шикарная                      |     22    |сука             |     15    |
-|симпатичная                   |     14    |блядь (+варианты)|     11    |
-|прелесть                      |     10    |дешевка/ая       |     10    |
-|богиня                        |      5    |тьфу             |     10    |
-|                              |           |курица           |      8    |
-|                              |           |девка            |      6    |
-|                              |           |уродка           |      2    |
-|                              |  **2000** |                 |  **1500** |
+| Positive                     | Frequency | Negative                     | Frequency |
+|:----------------------------:|:---------:|:----------------------------:|:---------:|
+|красавица/отка/ивая/ота/ивое  |    454    |Ұят/уят/сыз                   |    415    |
+|молодец/чина/чинка            |    357    |намыс/сыз                     |    171    |
+|смело/ая                      |    272    |позор                         |    143    |
+|супер                         |    114    |стыд/но                       |    141    |
+|браво                         |     84    |дура                          |    140    |
+|поддерживаю                   |     69    |ужас/но                       |     71    |
+|умная                         |     64    |шлюха (+варианты)             |     48    |
+|респект                       |     43    |фу                            |     42    |
+|круто/ая                      |     35    |проститутка                   |     23    |
+|секси                         |     32    |глупая                        |     15    |
+|отличная                      |     24    |тупая                         |     15    |
+|шикарная                      |     22    |сука                          |     15    |
+|симпатичная                   |     14    |блядь (+варианты)             |     11    |
+|прелесть                      |     10    |дешевка/ая                    |     10    |
+|богиня                        |      5    |тьфу                          |     10    |
+|                              |           |курица                        |      8    |
+|                              |           |девка                         |      6    |
+|                              |           |уродка                        |      2    |
+|                              |  **2000** |                              |  **1500** |
 
-[пж]опа 47
-сиськи 31
-тема сисек 25
+### Special words
+
+| Positive      | Frequency     |
+|:-------------:|:-------------:|
+|попа/жопа      | 47            |
+|сиськи         | 31            |
+|тема сисек     | 25            |
 
 ## Exploratory Analysis 2 - Top 30 Info
 
-```{r}
+```{r, fig.align='center', fig.height=8, fig.width=8}
 # top commenters by number of comments
 t <- as.data.frame(table(df_comments$name))
 t <- t[order(t$Freq, decreasing = TRUE),]
@@ -460,10 +470,9 @@ sprintf("The comment contains %d characters and %d words",
 
 ```
 
-
 ## Exploratory Analysis 3 - Word Cloud
 
-```{r}
+```{r, fig.align='center', fig.height=8, fig.width=8}
 # because we have relatively small number of documents we will use simple corpus
 df_corpus = Corpus(VectorSource(df_comments$cmnt), readerControl = list(language = "rus"))
 
@@ -518,51 +527,31 @@ barplot(d[1:30,]$freq,
         las = 1)
 grid(NULL, NA, lwd = 1, col = "lightgray", lty = "dotted")
 title("Top 30 most frequently used words", adj = 0, line = 0.5)
+```
 
+```{r, fig.height=8, fig.width=10}
 # build word cloud
 set.seed(2017)
 wordcloud2(data = d)
 ```
 
-
 ## Sentiment Analysis
 
-Due to lack of resources - later
+Due to lack of resources - later.
 
-## Tools used
+## Resources used
 
 - Facebook
-- Bookmarklet
 - Safari, Chrome
-- Sublime text 3
+- Sublime Text 3
+- Bookmarklet
 - R Studio
+- Dash
 - MacBook Pro 15
 - Cofee
 
 ## Contacts
 
-- LinkedIn
-- Pinterest
-- Twitter
-
-## <span style="color:red">Legal disclaimer</span>
-
-**1. Report content**
-
-The author takes no responsibility for the timeliness, accuracy, completeness or quality of the information provided. The author is in no event liable for damages of any kind incurred or suffered as a result of the use or non-use of the information presented on this website or the use of defective or incomplete information unless the author has been acting deliberately or in a wantonly negligent manner. The contents of this website are subject to confirmation and not binding. The author expressly reserves the right to alter, amend or remove pages, whole and in part, without prior notice or to discontinue publication for a period of time or even completely.
-
-**2. References and links**
-
-In cases of direct and indirect references to third-party Internet pages or other documents on the Internet (hyperlinks) the author is not responsible for, the author can only be made liable if the author was aware of the content of the website or if it would have been reasonable and technically feasible to prevent the use of websites with illegal content. The author hereby explicitly states that, at the time of setting the link, there was no evidence of illegal content on the respective website. The author has no influence on the current or future design, the content or the copyright of the linked website. Therefore, the author dissociates him-/herself explicitly from all changes concerning the contents of linked pages that were made after the link was set. This statement is valid for all links and references within the website created by the author as well as for links and references from third parties in guestbooks, discussion forums, lists of links and mailing lists. The provider of the linked page is exclusively responsible for illegal, defective or incomplete contents and especially for damages resulting from the use or non-use of the information presented on the linked page. The author referring to the page through a link is not liable for any of the above.
-
-**3. Copyright and acknowledgement of sources**
-
-The author aims to observe the copyright of any graphic, audio document, video sequence or text in all publications, to use his/her own graphics, audio documents, video sequences or texts or to make use of license free graphics, audio documents, video sequences or texts. All trade marks and brands mentioned on the website, including those protected by third parties, are without limitation subject to the provisions under the respective labelling law and the rights of the copyright holder. The sole mentioning of a trade mark on this website should not lead to the assumption that it is not protected by the rights of a third party! The author of the website has the exclusive copyright to all published objects created by him-/herself. The reproduction or use of any such graphics, audio documents, video sequences or texts in other electronic or printed publications is prohibited without the author's express consent.
-
-**4. Data Protection**
-
-On some pages you have the possibility to enter personal or business data (e. g. e-mail addresses, names, postal addresses, etc.). The disclosure of this data is voluntary. If technically feasible and where reasonable, all services offered can be used without disclosing personal information or by use of anonymised data or aliases. Exceptions are forms for ordering publications or other materials, registration forms for events or accreditation forms. Third parties are prohibited to send unsolicited information to mailing addresses, phone or fax numbers or e-mail addresses published on the imprint page or similar pages. We reserve the right to take legal action against anyone violating this prohibition by sending so-called spam.</span>
-
-**5. Legal effect of disclaimer**
-
-This disclaimer is part of the website linked to this page. If parts of this text or certain wordings are not, no longer or not completely in line with current legislation, it will not prejudice the rest of the document in terms of content or validity.
+- [LinkedIn](https://www.linkedin.com/in/denisrasulev)
+- [Pinterest](https://pinterest.com/denisrasulev)
+- [Twitter](https://twitter.com/denisrasulev)
