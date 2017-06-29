@@ -75,13 +75,13 @@ title("Number of Comments by Hour", adj = 0.5, line = 1)
 # top commenters by number of comments
 t <- as.data.frame(table(df_comments$name))
 t <- t[order(t$Freq, decreasing = TRUE),]
-names(t)[1] = 'Name'
-names(t)[2] = 'Comments'
+names(t)[1] = 'name'
+names(t)[2] = 'comments'
 
 # show top commenters as bar plot
 par(mar = c(3,12,3,1) + 0.1)
-barplot(t$Comments[1:30],
-        names.arg = t$Name[1:30],
+barplot(t$comments[1:30],
+        names.arg = t$name[1:30],
         col = rainbow(45),
         xlim = c(0,300),
         ylim = c(35,0),
