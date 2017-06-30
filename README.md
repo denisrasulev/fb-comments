@@ -12,7 +12,6 @@ Overall this post got more than 20,000 likes, 990 shares and about 11,000 commen
 
 ## To do
 
-- [ ] Report
 - [ ] Sentiment analysis
 
 Sentiment analysis for Russian language remains field for exploration, therefore this feature is yet to be realized some time later.
@@ -23,6 +22,7 @@ Sentiment analysis for Russian language remains field for exploration, therefore
 - [X] Word cloud
 - [X] Time analysis
 - [X] Clean corpus
+- [X] Report
 
 ## Donations
 

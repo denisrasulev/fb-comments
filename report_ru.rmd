@@ -1,7 +1,7 @@
 ---
 title: "Facebook Comments Analysis Report"
 author: "Denis Rasulev"
-date: "6/25/2017"
+date: "July 01, 2017"
 output: html_document
 ---
 
@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Content
 
+- Legal disclaimer
 - Introduction
 - Getting data
 - Cleaning data
@@ -20,27 +21,40 @@ knitr::opts_chunk$set(echo = TRUE)
 - Exploratory Analysis 1 - Top 30
 - Exploratory Analysis 2 - Word Cloud
 - Sentiment Analysis
-- <span style="color:red">Legal disclaimer</span>
+- Resources Used
+- Contacts
+
+## Legal Disclaimer
+
+This disclaimer governs the use of this report. Your reading of the rest of the report, in addition to the disclaimer, means your acceptance of the terms of the disclaimer in full.
+
+While the expert has made every attempt possible to ensure the accuracy and reliability of the information provided in this report, this information is provided "as is", with no guarantee of completeness, accuracy, timeliness or the results obtained from the use of this information. No warranties, promises and/or representations of any kind, expressed or implied, are given as to the nature, standard, accuracy or otherwise of the information provided in this report nor to the suitability or otherwise of the information to your particular circumstances.
+
+The expert does not accept any responsibility or liability for the accuracy, content, completeness, legality, or reliability of the information contained on this report, any errors or omissions, any loss or damage of whatever nature (direct, indirect, consequential, or other) whether arising in contract, tort or otherwise, which may arise as a result of your use of (or inability to use) this report, or from your use of (or failure to use) the information in this report, even if advised of the possibility of such damages.
+
+This report provides links to other sites owned by third parties. The content of such third party sites is not within expert's control, and expert cannot and will not take responsibility for the information or content thereon. Links to such third party sites are not to be taken as an endorsement by the expert of the third party site, or any products promoted, offered or sold on the third party site, nor that such sites are free from computer viruses or anything else that has destructive properties.
+
+In this disclaimer, "expert" means Denis Rasulev of Bratislava, Slovakia.
 
 ## Introduction
 
 On April 22, 2016 one of the notable (36,530 followers) Kazakhstani bloggers - [Asel Bayandarova](https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
 has published facebook post titled ["Что можно делать казашкам"](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268)
-("What kazakh women are allowed to do"). The post was accompanied by a rather provocative photograph in green swimming trunks alone, (almost) without demonstrating intimate body parts.
+("What kazakh women are allowed to do"). The post was accompanied by a photo of Asel in green swimming trunks alone, (almost) without demonstrating intimate body parts.
 
-The post has sparkled a fierce discussion between facebook users of Kazkhstan (and abroad), who divided into two groups with one being supportive to the Original Poster, while the other blaming OP up to the use of obscene vocabulary.
+The post has sparked a fierce discussion between facebook users of Kazkhstan (and abroad), who divided into two groups with one being supportive to the Original Poster, while the other blaming OP up to the use of obscene vocabulary.
 
-Overall this post got more than 20,000 likes, 990 shares and about 11,000 comments + replies, so the purpose of this project is exploratory and sentiment analysis of those comments.
+Overall this post got more than 20,000 likes, 990 shares and about 11,000 comments + replies, so the purpose of this project is to make exploratory and sentiment analysis of those comments.
 
 ## Getting data
 
-The entire process of getting and cleaning data is neither optimal (even close) nor easily reproducible in its current state. The development of a method to obtain / clean such data in optimal way has become a separate project. If you are interested in this topic, please add / follow me using any social contacts provided at the end of the report.
+The entire process of getting and cleaning data is neither optimal (even close) nor easily reproducible in its current state. The development of a method to obtain / clean such data in optimal way has become a separate project. If you are interested in this topic, please add / follow me using any of social contacts provided at the end of the report.
 
-In order to get text of all the comments and replies, I have used [special bookmarklet](http://com.hemiola.com/2015/08/29/expand-all/), which allowed to open all comments, See More, Replies, View more etc. links. 
+All the comments and replies were manually opened, copied and pasted to [Sublime Text 3](https://www.sublimetext.com/3) for further processing.
 
-You need to know that Facebook stops delivering comments hidden behind *View more comments* link after a certain point; you click it and nothing happens. This bookmarklet bumps into the same limitation. In order to overcome it I had to stop the bookmarklet, wait few hours (overnight or about 7 hours) and then continue. Eventually all comments and replies were opened.
+There is [special bookmarklet](http://com.hemiola.com/2015/08/29/expand-all/), which allowes to open all Comments, See More, Replies, View more etc. links automatically, but you need to know that Facebook stops delivering comments hidden behind *View more comments* link after a certain point; you click it and nothing happens. This bookmarklet bumps into the same limitation.
 
-After that all text from the page was copied and pasted to [Sublime Text 3](https://www.sublimetext.com/3) for further processing. One year later, in 2017, I have added some fresh comments that people were still making. File contains 34,890 lines and occupies 2,3 MB of disk space.
+One year later, in 2017, I have added several fresh comments that people were still making. File with raw text contains 34,890 lines and occupies 2,3 MB of disk space.
 
 Here is the sample of the unprocessed text file containg all the information. 
 
@@ -80,7 +94,7 @@ As we can see from the sample above, general structure of the text is as follows
      - Number of likes + bod + Month Date with one or two digits + 'at' + time + '\\n'
      - Month Date with one or two digits + 'at' + time + '\\n'
 
-Sublime Text 3 has very convenient search/replace tool:
+Sublime Text 3 has very convenient search/replace tool which supports regular expressions:
 ![](images/st3sr.png)
 
 Below you will find all the commands and regex search strings that were used step by step to find and replace / delete certain text constructions.
@@ -92,7 +106,7 @@ delete them
 
 dates without year, these are only present in fresh comments made in 2017
 ^(·\s\w+\s\d{1,2}) at
-add year
+replcae with (adds year)
 \1, 2017 at
 
 lines without any likes, they start with bod + space + capital letter (month name)
@@ -151,7 +165,7 @@ somebody's photo.
 first and last names in the beginning, including russian and kazakh (diacritic) letters
 ^[A-ZА-ЯҚƏ]\w{2,}(\s+|\.?)[A-ZА-ЯҚƏ]\w*\s+
 ```
-Overall this part took most time and involved lots of manual work. File contains 55,145 lines and occupies 2,3 MB of disk space. Here is the sample of the file after all the cleaning was done:
+Overall this part took most of the time and involved lots of manual work. File with processed text contains 55,145 lines and occupies 2,3 MB of disk space. Here is the sample of the file after all the cleaning was done:
 
 ```
 Erzhan Malkovich
@@ -190,9 +204,9 @@ Omir Shynybekuly 20 148 лайков...
 
 ## Pre-processing
 
-For pre-processing of the cleaned file I wrote special parser function. Knowing the structure of the prepared file, we can go through it line by line saving required pieces of information to data frame.
+For pre-processing of the cleaned file I wrote special parser function. Knowing the structure of the prepared file, we can go through it line by line saving required pieces of information to a data frame.
 
-```{r}
+```{r parser}
 # Information parser for pre-processed file
 # (c) 2017 Denis Rasulev
 # All Rights Reserved
@@ -276,11 +290,11 @@ parse_comments <- function(comments) {
 
 ```
 
-Parsing takes some time and returns tidy data frame.
+Parsing takes some time and returns clean and tidy data frame.
 
 ## Setup and load data
 
-```{r}
+```{r load_data, message=FALSE, warning=FALSE}
 # Facebook Comments Exploration and Analysis
 # (c) 2017 Denis Rasulev
 # All Rights Reserved
@@ -319,7 +333,7 @@ df_comments <- readRDS("data/comments.rds")
 
 ## Basic time analysis
 
-```{r}
+```{r year, fig.align='center'}
 # aggregate data by time frame
 t1 <- table(df_comments$year)   # year
 t2 <- table(df_comments$month)  # month
@@ -327,38 +341,55 @@ t3 <- table(df_comments$day)    # day
 t4 <- table(df_comments$hour)   # hour
 
 # distribution of comments by year
-par(mar = c(3,5,3,1) + 0.1)
+par(mar = c(2,4,4,1) + 0.1)
 barplot(t1,
         col = "lightgreen",
         ylim = c(0,12000),
         las = 1)
-title("Number of Comments by Year", adj = 0.5, line = 1)
+title("Number of Comments by Year", adj = 0.5, line = 2)
+```
 
+As we can see, vast majority of the comments were made in 2016, but some insignificant interest still took place in 2017. Let see how it spreaded amongst months.
+
+```{r month, fig.align='center'}
 # distribution of comments by month
+par(mar = c(2,4,4,1) + 0.1)
 barplot(t2,
         col = "lightgreen",
         ylim = c(0,12000),
         las = 1)
-title("Number of Comments by Month", adj = 0.5, line = 1)
+title("Number of Comments by Month", adj = 0.5, line = 2)
+```
 
+Here we can see that almost all comments were made in April alone with very insignificant and reducing number in the following months. That means that popularity of the post didn't went beyond one month. Let's see how the number of comments is spreaded beween days.
+
+```{r days, fig.align='center'}
 # distribution of comments by day
+par(mar = c(2,4,4,1) + 0.1)
 barplot(t3,
         col = "lightgreen",
         ylim = c(0,5000),
         las = 1)
-title("Number of Comments by Day", adj = 0.5, line = 1)
+title("Number of Comments by Day", adj = 0.5, line = 2)
+```
 
+Here we can clearly see that peak of commenting was in a first few days, mainly, from 22 (max) to 26, i.e. almost 4 days people were actively expressing their ideas and emotions related to the post. This is quite notable activity in kazakhstani segment of facebook.
+
+```{r hours, fig.align='center', fig.width=10}
 # distribution of comments by hour
+par(mar = c(2,4,4,1) + 0.1)
 barplot(t4,
         col = "lightgreen",
         ylim = c(0,800),
         las = 1)
-title("Number of Comments by Hour", adj = 0.5, line = 1)
+title("Number of Comments by Hour", adj = 0.5, line = 2)
 ```
+
+Activity by hour shows few interesting findings. First, we can see that people were commenting most actively in the first half of a day, mainly from 8am till 12 noon, then activity strongly goes down (lunch time?) and after that we can see another, lower peak, which starts from 7pm till 12 midnight. Large number of comments made from midnight till 8am (left part of the graph) is mostly related to twenty-four hours time period following immediately after the post was made.
 
 ## Exploratory Analysis 1 - Emoticons & Words
 
-There were numerous emoticons used alongside comments. Here is some statistics on their frequencу.
+There were numerous emoticons used alongside the comments. Here is some statistics on their usage frequencу.
 
 ### Emoticons
 
@@ -374,49 +405,65 @@ There were numerous emoticons used alongside comments. Here is some statistics o
 |    😁    |     40    |    😠    |     14    |
 |    😀    |     35    |    😕    |     13    |
 |    😘    |     18    |          |           |
-|          |  **2000** |          |  **1500** |
+|          |  **2535** |          |  **448**  |
+
+We can clearly see that number of positive emoticons is significantly larger than negative ones.
+
+Let's see some statistics on words used to express attitude to the post. These words were searched for manually, through regular expressions, since there are no (known to me) positive/negative words dictionaries for russian/kazakh languages.
 
 ### Words
 
-| Positive                     | Frequency | Negative        | Frequency |
-|:----------------------------:|:---------:|:---------------:|:---------:|
-|красавица/отка/ивая/ота/ивое  |    454    |Ұят/уят/сыз      |    415    |
-|молодец/чина/чинка            |    357    |намыс/сыз        |    171    |
-|смело/ая                      |    272    |позор            |    143    |
-|супер                         |    114    |стыд/но          |    141    |
-|браво                         |     84    |дура             |    140    |
-|поддерживаю                   |     69    |ужас/но          |     71    |
-|умная                         |     64    |шлюха (+варианты)|     48    |
-|респект                       |     43    |фу               |     42    |
-|круто/ая                      |     35    |проститутка      |     23    |
-|секси                         |     32    |глупая           |     15    |
-|отличная                      |     24    |тупая            |     15    |
-|шикарная                      |     22    |сука             |     15    |
-|симпатичная                   |     14    |блядь (+варианты)|     11    |
-|прелесть                      |     10    |дешевка/ая       |     10    |
-|богиня                        |      5    |тьфу             |     10    |
-|                              |           |курица           |      8    |
-|                              |           |девка            |      6    |
-|                              |           |уродка           |      2    |
-|                              |  **2000** |                 |  **1500** |
+| Positive                     | Frequency | Negative                     | Frequency |
+|:----------------------------:|:---------:|:----------------------------:|:---------:|
+|красавица/отка/ивая/ота/ивое  |    454    |Ұят/уят/сыз                   |    415    |
+|молодец/чина/чинка            |    357    |намыс/сыз                     |    171    |
+|смело/ая                      |    272    |позор                         |    143    |
+|супер                         |    114    |стыд/но                       |    141    |
+|браво                         |     84    |дура                          |    140    |
+|поддерживаю                   |     69    |ужас/но                       |     71    |
+|умная                         |     64    |шлюха (+варианты)             |     48    |
+|респект                       |     43    |фу                            |     42    |
+|круто/ая                      |     35    |проститутка                   |     23    |
+|секси                         |     32    |глупая                        |     15    |
+|отличная                      |     24    |тупая                         |     15    |
+|шикарная                      |     22    |сука                          |     15    |
+|симпатичная                   |     14    |блядь (+варианты)             |     11    |
+|прелесть                      |     10    |дешевка/ая                    |     10    |
+|богиня                        |      5    |тьфу                          |     10    |
+|                              |           |курица                        |      8    |
+|                              |           |девка                         |      6    |
+|                              |           |уродка                        |      2    |
+|                              |  **1599** |                              |  **1286** |
 
-[пж]опа 47
-сиськи 31
-тема сисек 25
+As we can see, there is almost a parity, with some minor advantage (55% vs 45%) towards positive, supportive words.
+
+Due to the nature of the photo, there were some special words used to describe intimate parts of a body. However, as statistics shows, there were not very significant amount of them in the text.
+
+### Special words
+
+| Positive      | Frequency     |
+|:-------------:|:-------------:|
+|попа/жопа      | 47            |
+|сиськи         | 31            |
+|тема сисек     | 25            |
+
+This concludes first part of exploratory analysis.
 
 ## Exploratory Analysis 2 - Top 30 Info
 
-```{r}
+In this part we'll make some quantitative analysis of the text.
+
+```{r top_30, fig.align='center', fig.height=8, fig.width=8}
 # top commenters by number of comments
 t <- as.data.frame(table(df_comments$name))
 t <- t[order(t$Freq, decreasing = TRUE),]
-names(t)[1] = 'Name'
-names(t)[2] = 'Comments'
+names(t)[1] = 'name'
+names(t)[2] = 'comments'
 
 # show top commenters as bar plot
-par(mar = c(3,12,3,1) + 0.1)
-barplot(t$Comments[1:30],
-        names.arg = t$Name[1:30],
+par(mar = c(2,12,3,1) + 0.1)
+barplot(t$comments[1:30],
+        names.arg = t$name[1:30],
         col = rainbow(45),
         xlim = c(0,300),
         ylim = c(35,0),
@@ -424,7 +471,13 @@ barplot(t$Comments[1:30],
         las = 1)
 grid(NULL, NA, lwd = 1, col = "lightgray", lty = "dotted")
 title("Top 30 people by the number of posted comments", adj = 0, line = 0.5)
+```
 
+Absolute leader is **`r t$name[1]`** with `r t$comments[1]` comments. Second place is **`r t$name[2]`** with `r t$comments[2]` comments and number three is **`r t$name[3]`** with `r t$comments[3]` comments.
+
+Now let's see whose comments got most likes.
+
+```{r most_liked, fig.align='center', fig.height=8, fig.width=8}
 # most liked commenters
 v <- df_comments[order(df_comments$like, decreasing = TRUE),]
 
@@ -439,10 +492,17 @@ barplot(v$like[1:30],
         las = 1)
 grid(NULL, NA, lwd = 1, col = "lightgray", lty = "dotted")
 title("Top 30 people whose comments got most likes", adj = 0, line = 0.5)
+```
 
-# clean memory
-rm(v)
+Absolute leader is **`r v$name[1]`** with `r v$like[1]` likes. Second place is **`r v$name[2]`** with `r v$like[2]` likes and number three is **`r v$name[3]`** with `r v$like[3]` likes.
 
+For the leading comment from Seke Kozgan: "и тут появляется он..." with photo of "Uyatman", please, see explanation below.
+
+Short time before the original post was made there was another notable activity in kazakhstani facebook, related to a person who has covered with a cloth a statue of the girl with visible nipples, because according to him, this was "uyat" (shame). After that he has got some fame and nickname "Uyatman". Two activities somewhat interefered with each other and that explaines why this particular comment got most likes.
+
+Now let's see most lengthy comment and its' characteristics.
+
+```{r most_lengthy, results='hide', fig.align='center', fig.height=8, fig.width=8}
 # most lengthy comment
 comment_length = 0
 for (i in 1:nrow(df_comments)) {
@@ -458,12 +518,17 @@ number_of_words <- sapply(gregexpr("\\W+", df_comments$cmnt[index]), length) + 1
 sprintf("The comment contains %d characters and %d words",
         nchar(df_comments$cmnt[index]), number_of_words)
 
+# clean memory
+rm(v)
 ```
 
+Author of the most lengthy comment is **`r df_comments$name[index]`**. The comment contains **`r nchar(df_comments$cmnt[index])`** characters and **`r number_of_words`** words.
+
+This concludes part two of exploratory analysis.
 
 ## Exploratory Analysis 3 - Word Cloud
 
-```{r}
+```{r corpus, fig.align='center', fig.height=8, fig.width=8}
 # because we have relatively small number of documents we will use simple corpus
 df_corpus = Corpus(VectorSource(df_comments$cmnt), readerControl = list(language = "rus"))
 
@@ -518,51 +583,32 @@ barplot(d[1:30,]$freq,
         las = 1)
 grid(NULL, NA, lwd = 1, col = "lightgray", lty = "dotted")
 title("Top 30 most frequently used words", adj = 0, line = 0.5)
+```
 
+```{r word_cloud, fig.height=8, fig.width=10}
 # build word cloud
 set.seed(2017)
 wordcloud2(data = d)
 ```
 
-
 ## Sentiment Analysis
 
-Due to lack of resources - later
+While working on this part it appeared that there are no suitable resources available to perform this analysis anyhow quick. Therefore, I am releasing this report "as is", while preparing tools and data for sentiment analysis. As soon as they will be ready, I will update this (and other) reports.
 
-## Tools used
+## Resources used
 
-- Facebook
-- Bookmarklet
-- Safari, Chrome
-- Sublime text 3
-- R Studio
-- MacBook Pro 15
-- Cofee
+- [Facebook](https://www.facebook.com)
+- [Safari](https://www.apple.com/safari/)
+- [Chrome](https://www.google.com/chrome/index.html)
+- [Bookmarklet](http://com.hemiola.com/2015/08/29/expand-all/)
+- [Sublime Text 3](https://www.sublimetext.com/3)
+- [R Studio](https://www.rstudio.org)
+- [Dash](https://kapeli.com/dash)
+- MacBookPro
+- Coffee
 
 ## Contacts
 
-- LinkedIn
-- Pinterest
-- Twitter
-
-## <span style="color:red">Legal disclaimer</span>
-
-**1. Report content**
-
-The author takes no responsibility for the timeliness, accuracy, completeness or quality of the information provided. The author is in no event liable for damages of any kind incurred or suffered as a result of the use or non-use of the information presented on this website or the use of defective or incomplete information unless the author has been acting deliberately or in a wantonly negligent manner. The contents of this website are subject to confirmation and not binding. The author expressly reserves the right to alter, amend or remove pages, whole and in part, without prior notice or to discontinue publication for a period of time or even completely.
-
-**2. References and links**
-
-In cases of direct and indirect references to third-party Internet pages or other documents on the Internet (hyperlinks) the author is not responsible for, the author can only be made liable if the author was aware of the content of the website or if it would have been reasonable and technically feasible to prevent the use of websites with illegal content. The author hereby explicitly states that, at the time of setting the link, there was no evidence of illegal content on the respective website. The author has no influence on the current or future design, the content or the copyright of the linked website. Therefore, the author dissociates him-/herself explicitly from all changes concerning the contents of linked pages that were made after the link was set. This statement is valid for all links and references within the website created by the author as well as for links and references from third parties in guestbooks, discussion forums, lists of links and mailing lists. The provider of the linked page is exclusively responsible for illegal, defective or incomplete contents and especially for damages resulting from the use or non-use of the information presented on the linked page. The author referring to the page through a link is not liable for any of the above.
-
-**3. Copyright and acknowledgement of sources**
-
-The author aims to observe the copyright of any graphic, audio document, video sequence or text in all publications, to use his/her own graphics, audio documents, video sequences or texts or to make use of license free graphics, audio documents, video sequences or texts. All trade marks and brands mentioned on the website, including those protected by third parties, are without limitation subject to the provisions under the respective labelling law and the rights of the copyright holder. The sole mentioning of a trade mark on this website should not lead to the assumption that it is not protected by the rights of a third party! The author of the website has the exclusive copyright to all published objects created by him-/herself. The reproduction or use of any such graphics, audio documents, video sequences or texts in other electronic or printed publications is prohibited without the author's express consent.
-
-**4. Data Protection**
-
-On some pages you have the possibility to enter personal or business data (e. g. e-mail addresses, names, postal addresses, etc.). The disclosure of this data is voluntary. If technically feasible and where reasonable, all services offered can be used without disclosing personal information or by use of anonymised data or aliases. Exceptions are forms for ordering publications or other materials, registration forms for events or accreditation forms. Third parties are prohibited to send unsolicited information to mailing addresses, phone or fax numbers or e-mail addresses published on the imprint page or similar pages. We reserve the right to take legal action against anyone violating this prohibition by sending so-called spam.</span>
-
-**5. Legal effect of disclaimer**
-
-This disclaimer is part of the website linked to this page. If parts of this text or certain wordings are not, no longer or not completely in line with current legislation, it will not prejudice the rest of the document in terms of content or validity.
+- [LinkedIn](https://www.linkedin.com/in/denisrasulev) Feel free to connect. Add these words "facebook comments report" to your request and your profile must be informative.
+- [Pinterest](https://pinterest.com/denisrasulev) Follow me here for useful materials on Data Science, Natural Langauge Processing, Machine Learning and many others.
+- [Twitter](https://twitter.com/denisrasulev) Follow me for fresh and interesting links.
