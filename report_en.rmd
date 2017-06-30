@@ -1,7 +1,7 @@
 ---
 title: "Facebook Comments Analysis Report"
 author: "Denis Rasulev"
-date: "6/25/2017"
+date: "July 01, 2017"
 output: html_document
 ---
 
@@ -26,7 +26,15 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Legal Disclaimer
 
-Я ни за что не отвечаю!
+This disclaimer governs the use of this report. Your reading of the rest of the report, in addition to the disclaimer, means your acceptance of the terms of the disclaimer in full.
+
+While the expert has made every attempt possible to ensure the accuracy and reliability of the information provided in this report, this information is provided "as is", with no guarantee of completeness, accuracy, timeliness or the results obtained from the use of this information. No warranties, promises and/or representations of any kind, expressed or implied, are given as to the nature, standard, accuracy or otherwise of the information provided in this report nor to the suitability or otherwise of the information to your particular circumstances.
+
+The expert does not accept any responsibility or liability for the accuracy, content, completeness, legality, or reliability of the information contained on this report, any errors or omissions, any loss or damage of whatever nature (direct, indirect, consequential, or other) whether arising in contract, tort or otherwise, which may arise as a result of your use of (or inability to use) this report, or from your use of (or failure to use) the information in this report, even if advised of the possibility of such damages.
+
+This report provides links to other sites owned by third parties. The content of such third party sites is not within expert's control, and expert cannot and will not take responsibility for the information or content thereon. Links to such third party sites are not to be taken as an endorsement by the expert of the third party site, or any products promoted, offered or sold on the third party site, nor that such sites are free from computer viruses or anything else that has destructive properties.
+
+In this disclaimer, "expert" means Denis Rasulev of Bratislava, Slovakia.
 
 ## Introduction
 
@@ -490,7 +498,7 @@ Absolute leader is **`r v$name[1]`** with `r v$like[1]` likes. Second place is *
 
 For the leading comment from Seke Kozgan: "и тут появляется он..." with photo of "Uyatman", please, see explanation below.
 
-Short time before this post there was another notable activity in kazakhstani facebook, related to a person who has covered with some cloth a statue of the girl with visible nipples because, according to him, this was "uyat" (shame). After that he has got some fame and nickname "Uyatman". Two activities somewhat interefered with each other and that explaines why this particular comment got most likes.
+Short time before the original post was made there was another notable activity in kazakhstani facebook, related to a person who has covered with a cloth a statue of the girl with visible nipples, because according to him, this was "uyat" (shame). After that he has got some fame and nickname "Uyatman". Two activities somewhat interefered with each other and that explaines why this particular comment got most likes.
 
 Now let's see most lengthy comment and its' characteristics.
 
@@ -585,21 +593,22 @@ wordcloud2(data = d)
 
 ## Sentiment Analysis
 
-Due to lack of resources - later.
+While working on this part it appeared that there are no suitable resources available to perform this analysis anyhow quick. Therefore, I am releasing this report "as is", while preparing tools and data for sentiment analysis. As soon as they will be ready, I will update this (and other) reports.
 
 ## Resources used
 
-- Facebook
-- Safari, Chrome
-- Sublime Text 3
-- Bookmarklet
-- R Studio
-- Dash
-- MacBook Pro 15
-- Cofee
+- [Facebook](https://www.facebook.com)
+- [Safari](https://www.apple.com/safari/)
+- [Chrome](https://www.google.com/chrome/index.html)
+- [Bookmarklet](http://com.hemiola.com/2015/08/29/expand-all/)
+- [Sublime Text 3](https://www.sublimetext.com/3)
+- [R Studio](https://www.rstudio.org)
+- [Dash](https://kapeli.com/dash)
+- MacBookPro
+- Coffee
 
 ## Contacts
 
-- [LinkedIn](https://www.linkedin.com/in/denisrasulev)
-- [Pinterest](https://pinterest.com/denisrasulev)
-- [Twitter](https://twitter.com/denisrasulev)
+- [LinkedIn](https://www.linkedin.com/in/denisrasulev) Feel free to connect. Add these words "facebook comments report" to your request and your profile must be informative.
+- [Pinterest](https://pinterest.com/denisrasulev) Follow me here for useful materials on Data Science, Natural Langauge Processing, Machine Learning and many others.
+- [Twitter](https://twitter.com/denisrasulev) Follow me for fresh and interesting links.
