@@ -95,7 +95,7 @@ Like · Reply · April 23 at 12:00am
      - Месяц Дата с одной или двумя цифрами + 'at' + время + '\\ n'
 
 Sublime Text 3 имеет очень удобный инструмент поиска / замены, который поддерживает регулярные выражения:
-![](images/st3sr.png)
+![](/Volumes/data/projects/fb_sentiment/images/st3sr.png)
 
 Ниже вы найдете все команды и строки поиска регулярных выражений, которые были использованы шаг за шагом, чтобы найти и заменить / удалить определенные текстовые конструкции.
 
@@ -299,36 +299,33 @@ parse_comments <- function(comments) {
 # (c) 2017 Denis Rasulev
 # All Rights Reserved
 
-# set working directory
-setwd('/Volumes/data/projects/fb_sentiment/')
-
 # load required libraries and functions
 library(tm)         # Framework for text mining applications within R
 library(NLP)        # Basic classes and methods for Natural Language Processing
 library(ggplot2)    # Implementation of the grammar of graphics in R
 library(wordcloud2) # Fast visualization tool for creating wordcloud
-source("parser.r")
-source("helper.r")
+source("/Volumes/data/projects/fb_sentiment/code/parser.r")
+source("/Volumes/data/projects/fb_sentiment/code/helper.r")
 
 # if parsed file does not exist
-if (!file.exists("data/comments.rds")) {
+if (!file.exists("/Volumes/data/projects/fb_sentiment/data/comments.rds")) {
 
      # then load pre-processed comments file
-     comments_file  <- readLines("data/comments_processed.txt",
+     comments_file  <- readLines("/Volumes/data/projects/fb_sentiment/data/comments_processed.txt",
                                  encoding = "UTF-8", skipNul = FALSE, warn = FALSE)
 
      # parse everything from it
      parsed <- parse_comments(comments_file)
 
      # and save it to disk
-     saveRDS(parsed, file = "data/comments.rds")
+     saveRDS(parsed, file = "/Volumes/data/projects/fb_sentiment/data/comments.rds")
 
      # clear memory
      rm(comments_file, parse_comments, parsed)
 }
 
 # if parsed file already exists, read it in
-df_comments <- readRDS("data/comments.rds")
+df_comments <- readRDS("/Volumes/data/projects/fb_sentiment/data/comments.rds")
 ```
 
 ## Исследование 1 - Временной анализ
@@ -531,8 +528,10 @@ rm(v)
 df_corpus = Corpus(VectorSource(df_comments$cmnt), readerControl = list(language = "rus"))
 
 # load list of russian stop words
-ru_stopwords <- readLines("ru_stop_words.txt", encoding = "UTF-8", skipNul = TRUE, warn = FALSE)
-kz_stopwords <- readLines("kz_stop_words.txt", encoding = "UTF-8", skipNul = TRUE, warn = FALSE)
+ru_stopwords <- readLines("/Volumes/data/projects/fb_sentiment/res/stop_words_ru.txt",
+                          encoding = "UTF-8", skipNul = TRUE, warn = FALSE)
+kz_stopwords <- readLines("/Volumes/data/projects/fb_sentiment/res/stop_words_kz.txt",
+                          encoding = "UTF-8", skipNul = TRUE, warn = FALSE)
 
 # remove contact information in the beginning of the file
 ru_stopwords <- ru_stopwords[5:length(ru_stopwords)]
@@ -583,11 +582,13 @@ grid(NULL, NA, lwd = 1, col = "lightgray", lty = "dotted")
 title("Топ 30 использованных слов", adj = 0, line = 0.5)
 ```
 
-```{r word_cloud, fig.height=8, fig.width=10}
+```{r word_cloud, eval=FALSE, fig.height=8, fig.width=10, eval=FALSE}
 # build word cloud
 set.seed(2017)
 wordcloud2(data = d)
 ```
+
+![](/Volumes/data/projects/fb_sentiment/images/cloud.png)
 
 Механизм облака слов очень простой - чем больше раз определенное слово употреблялось, тем больше оно по размеру на этом облаке. Как мы можем видеть, самое большое слово - это "фото". Можем сделать вывод, что пользователи больше всего обсуждали именно саму фотографию, а потом уже все остальные темы.
 
