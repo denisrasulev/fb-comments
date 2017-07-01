@@ -1,14 +1,9 @@
 ---
-title: "Анализ комментариев на Facebook"
+title: "Анализ комментариев к посту на Facebook"
 author: "Денис Расулев"
 date: "July 01, 2017"
 output: html_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ## Содержание
 
 - Отказ от ответственности
@@ -41,25 +36,27 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Введение
 
-On April 22, 2016 one of the notable (36,530 followers) Kazakhstani bloggers - [Asel Bayandarova](https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
-has published facebook post titled ["Что можно делать казашкам"](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268)
-("What kazakh women are allowed to do"). The post was accompanied by a photo of Asel in green swimming trunks alone, (almost) without demonstrating intimate body parts.
+22 апреля 2016 года один из заметных (36,530 последователей) казахстанских блоггеров - [Асель Баяндарова](https://www.facebook.com/profile.php?id=100004350093268&fref=nf) опубликовала пост в Facebook под названием [«Что можно делать казашкам»](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268). Пост сопровождался фотографией Асель только в зеленых плавках (почти) без демонстрации интимных частей тела.
 
-The post has sparked a fierce discussion between facebook users of Kazkhstan (and abroad), who divided into two groups with one being supportive to the Original Poster, while the other blaming OP up to the use of obscene vocabulary.
+Этот пост вызвал ожесточенную дискуссию между пользователями Facebook из Казахстана (и за рубежом), которые разделились на две группы, одна из которых поддерживала автора поста, а другая обвиняла ее вплоть до использования обсценных (матерных) слов.
 
-Overall this post got more than 20,000 likes, 990 shares and about 11,000 comments + replies, so the purpose of this project is to make exploratory and sentiment analysis of those comments.
+В целом этот пост получил более 20 000 лайков, 990 перепостов и примерно 11 000 комментариев + ответов.
+
+Цель настоящего проекта - сделать исследовательский и анализ тональности текста комментариев к этому посту.
+
+Проект выполнен исключительно в образовательных целях, не финансировался и не преследует никаких иных целей, кроме получения дополнительной экспертизы в аналитической обработке публично доступной информации.
 
 ## Получение данных
 
-The entire process of getting and cleaning data is neither optimal (even close) nor easily reproducible in its current state. The development of a method to obtain / clean such data in optimal way has become a separate project. If you are interested in this topic, please add / follow me using any of social contacts provided at the end of the report.
+Весь процесс получения и очистки данных не является ни оптимальным (даже близко), ни легко воспроизводимым в его текущем состоянии. Разработка метода получения / очистки таких данных оптимальным образом стала отдельным проектом. Если вас интересует эта тема, пожалуйста, свяжитесь со мной, используя любые социальные контакты, предоставленные в конце отчета.
 
-All the comments and replies were manually opened, copied and pasted to [Sublime Text 3](https://www.sublimetext.com/3) for further processing.
+Все комментарии и ответы под исследуемым постом были открыты вручную, скопированы и вставлены в [Sublime Text 3](https://www.sublimetext.com/3) для последующей обработки.
 
-There is [special bookmarklet](http://com.hemiola.com/2015/08/29/expand-all/), which allowes to open all Comments, See More, Replies, View more etc. links automatically, but you need to know that Facebook stops delivering comments hidden behind *View more comments* link after a certain point; you click it and nothing happens. This bookmarklet bumps into the same limitation.
+Существует [специальный букмарклет](http://com.hemiola.com/2015/08/29/expand-all/), который позволяет автоматически открывать все комментарии, скрытые за дополнительными ссылками, но вы должны знать, что на определенном моменте Facebook перестает выдавать комментарии, скрытые за ссылкой *Открыть предыдущие комментарии*. Вы нажимаете на нее и ничего не происходит. Этот букмарклет сталкивается с таким же ограничением.
 
-One year later, in 2017, I have added several fresh comments that people were still making. File with raw text contains 34,890 lines and occupies 2,3 MB of disk space.
+Год спустя, в 2017 году, я добавил несколько свежих комментариев, которые люди все еще делали под этим постом. Файл с исходным текстом содержит 34890 строк и занимает 2,3 МБ дискового пространства.
 
-Here is the sample of the unprocessed text file containg all the information. 
+Ниже приведен образец необработанного текстового файла, содержащего всю информацию.
 
 ```
 Erzhan Malkovich
@@ -88,19 +85,19 @@ Like · Reply · April 23 at 12:00am
 
 ## Очистка данных
 
-As we can see from the sample above, general structure of the text is as follows:
+Как видно из приведенного выше примера, общая структура текста выглядит следующим образом:
 
-1. FirstName LastName + '\\n'
-2. Body of a comment, always starts with FirstName LastName + text + '\\n'
-     - may be empty or contain word 'photo' if only a picture was used as a comment
-3. Special bod (Unicode '\U00B7') followed by either of two:
-     - Number of likes + bod + Month Date with one or two digits + 'at' + time + '\\n'
-     - Month Date with one or two digits + 'at' + time + '\\n'
+1. FirstName LastName + '\\ n'
+2. Тело комментария, всегда начинается с FirstName LastName + text + '\\ n'
+     - может быть пустым или содержать слово «фото», если в качестве комментария использовалось только изображение
+3. Специальный символ (точка, Unicode '\ U00B7'), за которым следует одно из двух:
+     - Количество понравившихся + точка + Месяц Дата с одной или двумя цифрами + 'at' + время + '\\ n'
+     - Месяц Дата с одной или двумя цифрами + 'at' + время + '\\ n'
 
-Sublime Text 3 has very convenient search/replace tool which supports regular expressions:
+Sublime Text 3 имеет очень удобный инструмент поиска / замены, который поддерживает регулярные выражения:
 ![](images/st3sr.png)
 
-Below you will find all the commands and regex search strings that were used step by step to find and replace / delete certain text constructions.
+Ниже вы найдете все команды и строки поиска регулярных выражений, которые были использованы шаг за шагом, чтобы найти и заменить / удалить определенные текстовые конструкции.
 
 ```
 16 lines with unopened reply comment
@@ -141,7 +138,7 @@ smiles and other emoticons excluding letters, numbers, punctuation etc
 copy them all and save to a different file for further counting / processing
 ```
 
-Some other regex search strings that were used and may prove useful while processing this file:
+Дополнительные регулярные выражения, которые использовались и могут оказаться полезными при обработке этого файла:
 
 ```
 lines containing "· 2 · April 22"
@@ -168,7 +165,7 @@ somebody's photo.
 first and last names in the beginning, including russian and kazakh (diacritic) letters
 ^[A-ZА-ЯҚƏ]\w{2,}(\s+|\.?)[A-ZА-ЯҚƏ]\w*\s+
 ```
-Overall this part took most of the time and involved lots of manual work. File with processed text contains 55,145 lines and occupies 2,3 MB of disk space. Here is the sample of the file after all the cleaning was done:
+В целом эта часть занимала большую часть времени и включала в себя много ручной работы. Файл с обработанным текстом содержит 55145 строк и занимает 2,3 МБ дискового пространства. Вот образец файла после завершения очистки:
 
 ```
 Erzhan Malkovich
@@ -207,7 +204,7 @@ Omir Shynybekuly 20 148 лайков...
 
 ## Пред-обработка
 
-For pre-processing of the cleaned file I wrote special parser function. Knowing the structure of the prepared file, we can go through it line by line saving required pieces of information to a data frame.
+Для предварительной обработки подготовленного файла я написал специальный парсер. Зная структуру подготовленного файла, мы можем пройти через него построчно, сохраняя необходимые фрагменты информации в таблицу.
 
 ```{r parser}
 # Information parser for pre-processed file
@@ -293,7 +290,7 @@ parse_comments <- function(comments) {
 
 ```
 
-Parsing takes some time and returns clean and tidy data frame.
+Анализ занимает некоторое время и возвращает чистые и аккуратные данные в формате таблицы (data frame).
 
 ## Настройка и загрузка
 
@@ -349,10 +346,10 @@ barplot(t1,
         col = "lightgreen",
         ylim = c(0,12000),
         las = 1)
-title("Number of Comments by Year", adj = 0.5, line = 2)
+title("Количество комментариев в год", adj = 0.5, line = 2)
 ```
 
-As we can see, vast majority of the comments were made in 2016, but some insignificant interest still took place in 2017. Let see how it spreaded amongst months.
+Как мы видим, подавляющее большинство комментариев было сделано в 2016 году, но некоторый незначительный интерес по-прежнему сохранялся и в 2017 году. Посмотрим, как количество комментариев распределено по месяцам.
 
 ```{r month, fig.align='center'}
 # distribution of comments by month
@@ -361,10 +358,10 @@ barplot(t2,
         col = "lightgreen",
         ylim = c(0,12000),
         las = 1)
-title("Number of Comments by Month", adj = 0.5, line = 2)
+title("Количество комментариев в месяц", adj = 0.5, line = 2)
 ```
 
-Here we can see that almost all comments were made in April alone with very insignificant and reducing number in the following months. That means that popularity of the post didn't went beyond one month. Let's see how the number of comments is spreaded beween days.
+Здесь мы видим, что подавляющее число комментариев сделано в апреле. После этого число комментариев резко падает. Это означает, что популярность поста не превышала один месяц. Давайте посмотрим, как количество комментариев распределено по дням месяца.
 
 ```{r days, fig.align='center'}
 # distribution of comments by day
@@ -373,10 +370,10 @@ barplot(t3,
         col = "lightgreen",
         ylim = c(0,5000),
         las = 1)
-title("Number of Comments by Day", adj = 0.5, line = 2)
+title("Количество комментариев в день", adj = 0.5, line = 2)
 ```
 
-Here we can clearly see that peak of commenting was in a first few days, mainly, from 22 (max) to 26, i.e. almost 4 days people were actively expressing their ideas and emotions related to the post. This is quite notable activity in kazakhstani segment of facebook.
+Здесь мы можем четко видеть, что пик комментариев пришелся на первые несколько дней, в основном с 22 (максимум) до 26 апреля, т.е. почти 4 дня люди активно выражали свои идеи и эмоции, связанные с этим постом. Это весьма значительная активность и продолжительность в казахстанском сегменте Facebook.
 
 ```{r hours, fig.align='center', fig.width=10}
 # distribution of comments by hour
@@ -385,38 +382,38 @@ barplot(t4,
         col = "lightgreen",
         ylim = c(0,800),
         las = 1)
-title("Number of Comments by Hour", adj = 0.5, line = 2)
+title("Количество комментариев в час", adj = 0.5, line = 2)
 ```
 
-Activity by hour shows few interesting findings. First, we can see that people were commenting most actively in the first half of a day, mainly from 8am till 12 noon, then activity strongly goes down (lunch time?) and after that we can see another, lower peak, which starts from 7pm till 12 midnight. Large number of comments made from midnight till 8am (left part of the graph) is mostly related to twenty-four hours time period following immediately after the post was made.
+Активность по часам показывает несколько интересных результатов. Во-первых, мы можем видеть, что люди наиболее активно комментируют в первой половине дня, главным образом с 8 утра до 12 часов дня, после чего активность резко снижается (время обеда?). После этого мы можем видеть еще один, более низкий пик, который приходится на период с 7 вечера и до 12 ночи. Большое количество комментариев, сделанных с полуночи до 8 утра (левая часть графика) связано с тем, что большинство из них поступало почти непрерывно в первые 48 часов после размещения поста.
 
 ## Исследование 2 - Смайлики и слова
 
-There were numerous emoticons used alongside the comments. Here is some statistics on their usage frequencу.
+Вместе с комментариями использовались многочисленные смайлики. Вот несколько статистических данных об их использовании.
 
-### Emoticons
+### Смайлики
 
-| Positive | Frequency | Negative | Frequency |
-|:--------:|:---------:|:--------:|:---------:|
-|    :)    |    914    |    👎    |    133    |
-|    👍    |    621    |    :(    |     91    |
-|    😂    |    578    |    😡    |     63    |
-|    👏    |    189    |    🙈    |     52    |
-|    😍    |     54    |    😱    |     51    |
-|    😊    |     44    |    😈    |     16    |
-|    👌    |     42    |    👊    |     15    |
-|    😁    |     40    |    😠    |     14    |
-|    😀    |     35    |    😕    |     13    |
-|    😘    |     18    |          |           |
-|          |  **2535** |          |  **448**  |
+| Позитивные |  Частота  | Негативные |  Частота  |
+|:----------:|:---------:|:----------:|:---------:|
+|     :)     |    914    |    👎      |    133    |
+|     👍    |    621    |    :(       |     91    |
+|     😂    |    578    |    😡      |     63    |
+|     👏    |    189    |    🙈      |     52    |
+|     😍    |     54    |    😱      |     51    |
+|     😊    |     44    |    😈      |     16    |
+|     👌    |     42    |    👊      |     15    |
+|     😁    |     40    |    😠      |     14    |
+|     😀    |     35    |    😕      |     13    |
+|     😘    |     18    |            |           |
+|           |  **2535** |            |  **448**  |
 
-We can clearly see that number of positive emoticons is significantly larger than negative ones.
+Мы можем четко видеть, что число положительных смайликов значительно больше отрицательных.
 
-Let's see some statistics on words used to express attitude to the post. These words were searched for manually, through regular expressions, since there are no (known to me) positive/negative words dictionaries for russian/kazakh languages.
+Давайте посмотрим некоторые статистические данные о словах, использованных для выражения своего отношения к данному посту. Данные слова искались вручную, посредством регулярных выражений, так как не существует (известных мне) словарей с позитивными / негативными словами для русского и казахского языков.
 
-### Words
+### Слова
 
-| Positive                     | Frequency | Negative                     | Frequency |
+| Позитивные                   |  Частота  | Негативные                   |  Частота  |
 |:----------------------------:|:---------:|:----------------------------:|:---------:|
 |красавица/отка/ивая/ота/ивое  |    454    |Ұят/уят/сыз                   |    415    |
 |молодец/чина/чинка            |    357    |намыс/сыз                     |    171    |
@@ -438,23 +435,21 @@ Let's see some statistics on words used to express attitude to the post. These w
 |                              |           |уродка                        |      2    |
 |                              |  **1599** |                              |  **1286** |
 
-As we can see, there is almost a parity, with some minor advantage (55% vs 45%) towards positive, supportive words.
+Как мы видим, существует почти паритет с небольшим преимуществом (55% против 45%) в сторону позитивных и поддерживающих слов.
 
-Due to the nature of the photo, there were some special words used to describe intimate parts of a body. However, as statistics shows, there were not very significant amount of them in the text.
+Из-за характера фотографии были некоторые специальные слова, используемые для описания интимных частей тела. Однако, как показывают статистические данные, в комментариях они использовались относительно редко.
 
-### Special words
+### Специальные слова
 
-| Positive      | Frequency     |
+| Слова         | Частота       |
 |:-------------:|:-------------:|
 |попа/жопа      | 47            |
 |сиськи         | 31            |
 |тема сисек     | 25            |
 
-This concludes first part of exploratory analysis.
-
 ## Исследование 3 - Топ 30 объектов
 
-In this part we'll make some quantitative analysis of the text.
+В этой части мы проведем количественный анализ текста.
 
 ```{r top_30, fig.align='center', fig.height=8, fig.width=8}
 # top commenters by number of comments
@@ -473,12 +468,12 @@ barplot(t$comments[1:30],
         horiz = TRUE,
         las = 1)
 grid(NULL, NA, lwd = 1, col = "lightgray", lty = "dotted")
-title("Top 30 people by the number of posted comments", adj = 0, line = 0.5)
+title("Топ 30 по числу комментариев", adj = 0, line = 0.5)
 ```
 
-Absolute leader is **`r t$name[1]`** with `r t$comments[1]` comments. Second place is **`r t$name[2]`** with `r t$comments[2]` comments and number three is **`r t$name[3]`** with `r t$comments[3]` comments.
+Лидером по количеству сделанных комментариев является **`r t$name[1]`** с `r t$comments[1]` комментариями. Второе место принадлежит **`r t$name[2]`** с `r t$comments[2]` комментариями и на третьем месте **`r t$name[3]`** с `r t$comments[3]` комментариями.
 
-Now let's see whose comments got most likes.
+Теперь давайте посмотрим, чей комментарий получил наибольшее количество лайков.
 
 ```{r most_liked, fig.align='center', fig.height=8, fig.width=8}
 # most liked commenters
@@ -494,16 +489,16 @@ barplot(v$like[1:30],
         horiz = TRUE,
         las = 1)
 grid(NULL, NA, lwd = 1, col = "lightgray", lty = "dotted")
-title("Top 30 people whose comments got most likes", adj = 0, line = 0.5)
+title("Топ 30 по полученным лайкам", adj = 0, line = 0.5)
 ```
 
-Absolute leader is **`r v$name[1]`** with `r v$like[1]` likes. Second place is **`r v$name[2]`** with `r v$like[2]` likes and number three is **`r v$name[3]`** with `r v$like[3]` likes.
+Абсолютным лидером является **`r v$name[1]`**, чей комментарий получил `r v$like[1]` лайков. На втором месте находится комментарий **`r v$name[2]`** с `r v$like[2]` лайками. На третьем месте комментарий **`r v$name[3]`** с `r v$like[3]` лайками.
 
-For the leading comment from Seke Kozgan: "и тут появляется он..." with photo of "Uyatman", please, see explanation below.
+Комментарий `r v$name[1]`, набравший наибольшее количество лайков, представлял собой фразу "и тут появляется он..." и фотографию "Уятмена". Пояснения смотрите далее.
 
-Short time before the original post was made there was another notable activity in kazakhstani facebook, related to a person who has covered with a cloth a statue of the girl with visible nipples, because according to him, this was "uyat" (shame). After that he has got some fame and nickname "Uyatman". Two activities somewhat interefered with each other and that explaines why this particular comment got most likes.
+Незадолго до того, как был сделан анализируемый пост, в казахстанском сегменте Facebook был еще один всплеск активности, связанный с человеком, который накрыл тканью статую девушки с заметными анатомическими деталями, потому что, по его словам, это был «уят» (стыд, позор). После этого он получил известность и прозвище «Уятмэн». Это в некоторой степени объясняет, почему именно такой комментарий получил больше всего откликов и лайков.
 
-Now let's see most lengthy comment and its' characteristics.
+Давайте теперь посмотрим на самый большой комментарий и его характеристики.
 
 ```{r most_lengthy, results='hide', fig.align='center', fig.height=8, fig.width=8}
 # most lengthy comment
@@ -525,9 +520,9 @@ sprintf("The comment contains %d characters and %d words",
 rm(v)
 ```
 
-Author of the most lengthy comment is **`r df_comments$name[index]`**. The comment contains **`r nchar(df_comments$cmnt[index])`** characters and **`r number_of_words`** words.
+Автором самого длинного комментария является **`r df_comments$name[index]`**. Комментарий содержит **`r nchar(df_comments$cmnt[index])`** букв и **`r number_of_words`** слов.
 
-This concludes part two of exploratory analysis.
+Текст комментария: "`r df_comments$cmnt[index]`".
 
 ## Исследование 4 - Облако слов
 
@@ -585,7 +580,7 @@ barplot(d[1:30,]$freq,
         horiz = TRUE,
         las = 1)
 grid(NULL, NA, lwd = 1, col = "lightgray", lty = "dotted")
-title("Top 30 most frequently used words", adj = 0, line = 0.5)
+title("Топ 30 использованных слов", adj = 0, line = 0.5)
 ```
 
 ```{r word_cloud, fig.height=8, fig.width=10}
@@ -594,9 +589,11 @@ set.seed(2017)
 wordcloud2(data = d)
 ```
 
+Механизм облака слов очень простой - чем больше раз определенное слово употреблялось, тем больше оно по размеру на этом облаке. Как мы можем видеть, самое большое слово - это "фото". Можем сделать вывод, что пользователи больше всего обсуждали именно саму фотографию, а потом уже все остальные темы.
+
 ## Анализ тональности
 
-While working on this part it appeared that there are no suitable resources available to perform this analysis anyhow quick. Therefore, I am releasing this report "as is", while preparing tools and data for sentiment analysis. As soon as they will be ready, I will update this (and other) reports.
+Во время работы над этой частью выяснилось, что для проведения подобного анализа нет подходящих ресурсов. Поэтому я публикую этот отчет «как есть», в то же время занимаясь подготовкой инструментов и данных для проведения анализа тональности текстов. Как только они будут готовы, я обновлю этот (и другие) отчеты.
 
 ## Ресурсы
 
@@ -608,10 +605,10 @@ While working on this part it appeared that there are no suitable resources avai
 - [R Studio](https://www.rstudio.org)
 - [Dash](https://kapeli.com/dash)
 - MacBookPro
-- Coffee
+- Кофе
 
 ## Контакты
 
-- [LinkedIn](https://www.linkedin.com/in/denisrasulev) Feel free to connect. Add these words "facebook comments report" to your request and your profile must be informative.
-- [Pinterest](https://pinterest.com/denisrasulev) Follow me here for useful materials on Data Science, Natural Langauge Processing, Machine Learning and many others.
-- [Twitter](https://twitter.com/denisrasulev) Follow me for fresh and interesting links.
+- [LinkedIn](https://www.linkedin.com/in/denisrasulev) Добавляйтесь ко мне в контакты. Укажите в запросе слова "facebook comments report". Ваш профиль также должен быть информативным.
+- [Pinterest](https://pinterest.com/denisrasulev) Подписывайтесь и читайте интересные материалы по Data Science, Natural Langauge Processing, Machine Learning и многим другим.
+- [Twitter](https://twitter.com/denisrasulev) Подписывайтесь, чтобы получать интересные статьи и ссылки.

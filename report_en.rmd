@@ -4,11 +4,6 @@ author: "Denis Rasulev"
 date: "July 01, 2017"
 output: html_document
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ## Content
 
 - Legal disclaimer
@@ -47,7 +42,11 @@ has published facebook post titled ["Что можно делать казашк
 
 The post has sparked a fierce discussion between facebook users of Kazkhstan (and abroad), who divided into two groups with one being supportive to the Original Poster, while the other blaming OP up to the use of obscene vocabulary.
 
-Overall this post got more than 20,000 likes, 990 shares and about 11,000 comments + replies, so the purpose of this project is to make exploratory and sentiment analysis of those comments.
+Overall this post got more than 20,000 likes, 990 shares and about 11,000 comments + replies.
+
+The purpose of this project is to make exploratory and sentiment analysis of those comments.
+
+The project was carried out exclusively for educational purposes, it was not financed and does not pursue any other goals, except for obtaining additional expertise in the analytical processing of publicly available information.
 
 ## Getting data
 
@@ -444,13 +443,11 @@ Due to the nature of the photo, there were some special words used to describe i
 
 ### Special words
 
-| Positive      | Frequency     |
+| Words         | Frequency     |
 |:-------------:|:-------------:|
 |попа/жопа      | 47            |
 |сиськи         | 31            |
 |тема сисек     | 25            |
-
-This concludes first part of exploratory analysis.
 
 ## Exploratory Analysis 3 - Top 30 Info
 
@@ -527,8 +524,6 @@ rm(v)
 
 Author of the most lengthy comment is **`r df_comments$name[index]`**. The comment contains **`r nchar(df_comments$cmnt[index])`** characters and **`r number_of_words`** words.
 
-This concludes part two of exploratory analysis.
-
 ## Exploratory Analysis 4 - Word Cloud
 
 ```{r corpus, fig.align='center', fig.height=8, fig.width=8}
@@ -593,6 +588,8 @@ title("Top 30 most frequently used words", adj = 0, line = 0.5)
 set.seed(2017)
 wordcloud2(data = d)
 ```
+
+The mechanism of a cloud of words is very simple - the more times a certain word was used, the larger it is in the size on this cloud. As we can see, the biggest word here is "фото" (photo). We can conclude that users mostly discussed the photo itself, and then all the other topics.
 
 ## Sentiment Analysis
 
