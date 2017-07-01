@@ -17,24 +17,27 @@ knitr::opts_chunk$set(echo = TRUE)
 - Cleaning data
 - Pre-pocessing
 - Setup and load data
-- Basic time analysis
-- Exploratory Analysis 1 - Top 30
-- Exploratory Analysis 2 - Word Cloud
+- Exploratory Analysis 1 - Time analysis
+- Exploratory Analysis 2 - Emoticons & Words
+- Exploratory Analysis 3 - Top 30 Info
+- Exploratory Analysis 4 - Word Cloud
 - Sentiment Analysis
 - Resources Used
 - Contacts
 
 ## Legal Disclaimer
 
-This disclaimer governs the use of this report. Your reading of the rest of the report, in addition to the disclaimer, means your acceptance of the terms of the disclaimer in full.
+This disclaimer governs the use of this report. Your reading of the rest of the report, in addition to this disclaimer, means your acceptance of its terms in full.
 
-While the expert has made every attempt possible to ensure the accuracy and reliability of the information provided in this report, this information is provided "as is", with no guarantee of completeness, accuracy, timeliness or the results obtained from the use of this information. No warranties, promises and/or representations of any kind, expressed or implied, are given as to the nature, standard, accuracy or otherwise of the information provided in this report nor to the suitability or otherwise of the information to your particular circumstances.
+While the expert has made everything possible to ensure the accuracy and reliability of the information presented in this report, all information is provided "as is".
 
-The expert does not accept any responsibility or liability for the accuracy, content, completeness, legality, or reliability of the information contained on this report, any errors or omissions, any loss or damage of whatever nature (direct, indirect, consequential, or other) whether arising in contract, tort or otherwise, which may arise as a result of your use of (or inability to use) this report, or from your use of (or failure to use) the information in this report, even if advised of the possibility of such damages.
+The expert does not give any guarantees, promises and/or statements of any kind, expressed or implied, regarding the accuracy, content, completeness, validity, timeliness, reliability (or otherwise) of the information provided in this report, possible results obtained from use (or non-use) of this information, as well as its fitness (or unfitness) for your specific circumstances.
 
-This report provides links to other sites owned by third parties. The content of such third party sites is not within expert's control, and expert cannot and will not take responsibility for the information or content thereon. Links to such third party sites are not to be taken as an endorsement by the expert of the third party site, or any products promoted, offered or sold on the third party site, nor that such sites are free from computer viruses or anything else that has destructive properties.
+The expert assumes no responsibility for the accuracy, content, completeness, validity, timeliness, reliability (or otherwise) of the information contained in this report, any errors or omissions, losses or damages of any nature (direct, indirect, arising, or other) whether they arise in a contract, tort or otherwise, or which may arise as a result of use (or non-use) of the information in this report, even if the expert has been informed of the possibility of such damage.
 
-In this disclaimer, "expert" means Denis Rasulev of Bratislava, Slovakia.
+The report contains links to other sites owned by third parties. The content of such third-party sites is not under the control of the expert, and the expert is not responsible for the information or content of these sites. Links to such third-party sites are not to be taken as an endorsement by the expert of the third-party siteы, or any products promoted, offered or sold on the third-party sites, nor that such sites are free from computer viruses or anything else that has destructive properties.
+
+In this disclaimer, the word "expert" means Denis Rasulev from the city of Bratislava, Slovakia.
 
 ## Introduction
 
@@ -331,7 +334,7 @@ if (!file.exists("data/comments.rds")) {
 df_comments <- readRDS("data/comments.rds")
 ```
 
-## Basic time analysis
+## Exploratory Analysis 1 - Time analysis
 
 ```{r year, fig.align='center'}
 # aggregate data by time frame
@@ -387,7 +390,7 @@ title("Number of Comments by Hour", adj = 0.5, line = 2)
 
 Activity by hour shows few interesting findings. First, we can see that people were commenting most actively in the first half of a day, mainly from 8am till 12 noon, then activity strongly goes down (lunch time?) and after that we can see another, lower peak, which starts from 7pm till 12 midnight. Large number of comments made from midnight till 8am (left part of the graph) is mostly related to twenty-four hours time period following immediately after the post was made.
 
-## Exploratory Analysis 1 - Emoticons & Words
+## Exploratory Analysis 2 - Emoticons & Words
 
 There were numerous emoticons used alongside the comments. Here is some statistics on their usage frequencу.
 
@@ -449,7 +452,7 @@ Due to the nature of the photo, there were some special words used to describe i
 
 This concludes first part of exploratory analysis.
 
-## Exploratory Analysis 2 - Top 30 Info
+## Exploratory Analysis 3 - Top 30 Info
 
 In this part we'll make some quantitative analysis of the text.
 
@@ -526,7 +529,7 @@ Author of the most lengthy comment is **`r df_comments$name[index]`**. The comme
 
 This concludes part two of exploratory analysis.
 
-## Exploratory Analysis 3 - Word Cloud
+## Exploratory Analysis 4 - Word Cloud
 
 ```{r corpus, fig.align='center', fig.height=8, fig.width=8}
 # because we have relatively small number of documents we will use simple corpus

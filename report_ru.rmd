@@ -1,6 +1,6 @@
 ---
-title: "Facebook Comments Analysis Report"
-author: "Denis Rasulev"
+title: "Анализ комментариев на Facebook"
+author: "Денис Расулев"
 date: "July 01, 2017"
 output: html_document
 ---
@@ -9,34 +9,37 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Content
+## Содержание
 
-- Legal disclaimer
-- Introduction
-- Getting data
-- Cleaning data
-- Pre-pocessing
-- Setup and load data
-- Basic time analysis
-- Exploratory Analysis 1 - Top 30
-- Exploratory Analysis 2 - Word Cloud
-- Sentiment Analysis
-- Resources Used
-- Contacts
+- Отказ от ответственности
+- Введение
+- Получение данных
+- Очистка данных
+- Пред-обработка
+- Настройка и загрузка
+- Исследование 1 - Временной анализ
+- Исследование 2 - Смайлики и слова
+- Исследование 3 - Топ 30 объектов
+- Исследование 4 - Облако слов
+- Анализ тональности
+- Ресурсы
+- Контакты
 
-## Legal Disclaimer
+## Отказ от ответственности
 
-This disclaimer governs the use of this report. Your reading of the rest of the report, in addition to the disclaimer, means your acceptance of the terms of the disclaimer in full.
+Настоящий отказ от ответственности регулирует использование этого отчета. Ваше чтение остальной части отчета, в дополнение к данному отказу от ответственности, означает ваше согласие с его условиями в полном объеме.
 
-While the expert has made every attempt possible to ensure the accuracy and reliability of the information provided in this report, this information is provided "as is", with no guarantee of completeness, accuracy, timeliness or the results obtained from the use of this information. No warranties, promises and/or representations of any kind, expressed or implied, are given as to the nature, standard, accuracy or otherwise of the information provided in this report nor to the suitability or otherwise of the information to your particular circumstances.
+Хотя эксперт сделал все возможное для обеспечения точности и достоверности информации, представленной в этом отчете, вся информация предоставляется «как есть».
 
-The expert does not accept any responsibility or liability for the accuracy, content, completeness, legality, or reliability of the information contained on this report, any errors or omissions, any loss or damage of whatever nature (direct, indirect, consequential, or other) whether arising in contract, tort or otherwise, which may arise as a result of your use of (or inability to use) this report, or from your use of (or failure to use) the information in this report, even if advised of the possibility of such damages.
+Эксперт не дает никаких гарантий, обещаний и/или заявлений любого рода, выраженных или подразумеваемых, в отношении точности, содержания, полноты, обоснованности, своевременности, достоверности (или обратного) информации, предоставленной в данном отчете, возможных результатов, полученных от использования (или не использования) этой информации, а также ее пригодности (или непригодности) для ваших конкретных обстоятельств.
 
-This report provides links to other sites owned by third parties. The content of such third party sites is not within expert's control, and expert cannot and will not take responsibility for the information or content thereon. Links to such third party sites are not to be taken as an endorsement by the expert of the third party site, or any products promoted, offered or sold on the third party site, nor that such sites are free from computer viruses or anything else that has destructive properties.
+Эксперт не несет никакой ответственности за точность, содержание, полноту, обоснованность, своевременность, достоверность (или обратное) информации, содержащейся в этом отчете, любые ошибки или упущения, потери или ущерб любой природы (прямой, косвенный, вытекающий или иной) независимо от того, возникают ли они в договоре, деликте или иным образом, или которые могут возникнуть в результате использования (или не использования) информации в этом отчете, даже если эксперт был проинформирован о возможности такого ущерба.
 
-In this disclaimer, "expert" means Denis Rasulev of Bratislava, Slovakia.
+В отчете содержатся ссылки на другие сайты, принадлежащие третьим сторонам. Содержание таких сторонних сайтов не находится под контролем эксперта, и эксперт не несет ответственности за информацию или содержание этих сайтов. Ссылки на такие сторонние сайты не должны восприниматься в качестве рекомендации экспертом стороннего сайта или любых продуктов, рекламируемых, предлагаемых или продаваемых на сторонних сайтах, а также в качестве гарантии того, что на таких сайтах нет компьютерных вирусов или любых других элементов деструктивного свойства.
 
-## Introduction
+В настоящем отказе от ответственности слово «эксперт» означает Денис Расулев из города Братиславы, Словакия.
+
+## Введение
 
 On April 22, 2016 one of the notable (36,530 followers) Kazakhstani bloggers - [Asel Bayandarova](https://www.facebook.com/profile.php?id=100004350093268&fref=nf)
 has published facebook post titled ["Что можно делать казашкам"](https://www.facebook.com/permalink.php?story_fbid=621724294649235&id=100004350093268)
@@ -46,7 +49,7 @@ The post has sparked a fierce discussion between facebook users of Kazkhstan (an
 
 Overall this post got more than 20,000 likes, 990 shares and about 11,000 comments + replies, so the purpose of this project is to make exploratory and sentiment analysis of those comments.
 
-## Getting data
+## Получение данных
 
 The entire process of getting and cleaning data is neither optimal (even close) nor easily reproducible in its current state. The development of a method to obtain / clean such data in optimal way has become a separate project. If you are interested in this topic, please add / follow me using any of social contacts provided at the end of the report.
 
@@ -83,7 +86,7 @@ Omir Shynybekuly 20 148 лайков...
 Like · Reply · April 23 at 12:00am
 ```
 
-## Cleaning data
+## Очистка данных
 
 As we can see from the sample above, general structure of the text is as follows:
 
@@ -202,7 +205,7 @@ Omir Shynybekuly 20 148 лайков...
 · April 23, 2017 at 12:00am
 ```
 
-## Pre-processing
+## Пред-обработка
 
 For pre-processing of the cleaned file I wrote special parser function. Knowing the structure of the prepared file, we can go through it line by line saving required pieces of information to a data frame.
 
@@ -292,7 +295,7 @@ parse_comments <- function(comments) {
 
 Parsing takes some time and returns clean and tidy data frame.
 
-## Setup and load data
+## Настройка и загрузка
 
 ```{r load_data, message=FALSE, warning=FALSE}
 # Facebook Comments Exploration and Analysis
@@ -331,7 +334,7 @@ if (!file.exists("data/comments.rds")) {
 df_comments <- readRDS("data/comments.rds")
 ```
 
-## Basic time analysis
+## Исследование 1 - Временной анализ
 
 ```{r year, fig.align='center'}
 # aggregate data by time frame
@@ -387,7 +390,7 @@ title("Number of Comments by Hour", adj = 0.5, line = 2)
 
 Activity by hour shows few interesting findings. First, we can see that people were commenting most actively in the first half of a day, mainly from 8am till 12 noon, then activity strongly goes down (lunch time?) and after that we can see another, lower peak, which starts from 7pm till 12 midnight. Large number of comments made from midnight till 8am (left part of the graph) is mostly related to twenty-four hours time period following immediately after the post was made.
 
-## Exploratory Analysis 1 - Emoticons & Words
+## Исследование 2 - Смайлики и слова
 
 There were numerous emoticons used alongside the comments. Here is some statistics on their usage frequencу.
 
@@ -449,7 +452,7 @@ Due to the nature of the photo, there were some special words used to describe i
 
 This concludes first part of exploratory analysis.
 
-## Exploratory Analysis 2 - Top 30 Info
+## Исследование 3 - Топ 30 объектов
 
 In this part we'll make some quantitative analysis of the text.
 
@@ -526,7 +529,7 @@ Author of the most lengthy comment is **`r df_comments$name[index]`**. The comme
 
 This concludes part two of exploratory analysis.
 
-## Exploratory Analysis 3 - Word Cloud
+## Исследование 4 - Облако слов
 
 ```{r corpus, fig.align='center', fig.height=8, fig.width=8}
 # because we have relatively small number of documents we will use simple corpus
@@ -591,11 +594,11 @@ set.seed(2017)
 wordcloud2(data = d)
 ```
 
-## Sentiment Analysis
+## Анализ тональности
 
 While working on this part it appeared that there are no suitable resources available to perform this analysis anyhow quick. Therefore, I am releasing this report "as is", while preparing tools and data for sentiment analysis. As soon as they will be ready, I will update this (and other) reports.
 
-## Resources used
+## Ресурсы
 
 - [Facebook](https://www.facebook.com)
 - [Safari](https://www.apple.com/safari/)
@@ -607,7 +610,7 @@ While working on this part it appeared that there are no suitable resources avai
 - MacBookPro
 - Coffee
 
-## Contacts
+## Контакты
 
 - [LinkedIn](https://www.linkedin.com/in/denisrasulev) Feel free to connect. Add these words "facebook comments report" to your request and your profile must be informative.
 - [Pinterest](https://pinterest.com/denisrasulev) Follow me here for useful materials on Data Science, Natural Langauge Processing, Machine Learning and many others.
