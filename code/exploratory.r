@@ -129,8 +129,8 @@ sprintf("The comment contains %d characters and %d words",
 df_corpus = Corpus(VectorSource(df_comments$cmnt), readerControl = list(language = "rus"))
 
 # load list of russian stop words
-ru_stopwords <- readLines("stop_words_ru.txt", encoding = "UTF-8", skipNul = TRUE, warn = FALSE)
-kz_stopwords <- readLines("stop_words_kz.txt", encoding = "UTF-8", skipNul = TRUE, warn = FALSE)
+ru_stopwords <- readLines("res/stop_words_ru.txt", encoding = "UTF-8", skipNul = TRUE, warn = FALSE)
+kz_stopwords <- readLines("res/stop_words_kz.txt", encoding = "UTF-8", skipNul = TRUE, warn = FALSE)
 
 # remove contact information in the beginning of the file
 ru_stopwords <- ru_stopwords[5:length(ru_stopwords)]
