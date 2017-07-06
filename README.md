@@ -1,4 +1,5 @@
 [![Join the chat at https://gitter.im/fb_sentiment/Lobby](https://badges.gitter.im/fb_sentiment/Lobby.svg)](https://gitter.im/fb_sentiment/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gratipay User](https://img.shields.io/gratipay/user/dougwilson.svg)](https://gratipay.com/FB-Comments-Analyzer/)
 
 # Facebook Comments Sentiment Analysis
 
