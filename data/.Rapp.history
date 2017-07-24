@@ -1,0 +1,2 @@
+load("/Volumes/data/projects/fb_sentiment/data/comments.rds")
+load("/Volumes/data/projects/fb_sentiment/data/comments.rds")
